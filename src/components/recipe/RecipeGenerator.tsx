@@ -14,10 +14,10 @@ import {
   Sparkles,
   Info,
   Clock,
-  ChevronRight,
-  Flame,
   CheckCircle2,
   TrendingUp,
+  Volume2,
+  Layers,
 } from 'lucide-react';
 
 interface RecipeGeneratorProps {
@@ -79,69 +79,93 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
 
   if (!selectedCoffee || !recipe) {
     return (
-      <div className="p-8 text-center text-stone-400">
-        No hay cafés disponibles. Añade uno en el catálogo.
+      <div className="p-12 text-center text-stone-400">
+        No hay cafés disponibles. Añade uno en la pestaña de Mis Cafés.
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Header with Coffee and Method Pickers */}
-      <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-2xl p-5 shadow-sm space-y-5">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Coffee Selector */}
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-1.5 flex items-center gap-1.5">
-              <Coffee className="w-3.5 h-3.5 text-amber-500" />
-              Café Seleccionado
+    <div className="space-y-8 animate-fade-in">
+      {/* Section Header */}
+      <div>
+        <h2 className="text-3xl font-black font-serif text-stone-900 dark:text-stone-100 flex items-center gap-2.5">
+          <Sliders className="w-7 h-7 text-amber-500" />
+          Preparar Receta & Extracción
+        </h2>
+        <p className="text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-xl">
+          Selecciona tu café y método. El algoritmo de BLOOM calculará la molienda exacta para tu molinillo y la curva de vertidos.
+        </p>
+      </div>
+
+      {/* Step 1 & 2 Configurator Box */}
+      <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-3xl p-6 sm:p-7 shadow-sm space-y-6">
+        {/* Step 1: Choose Coffee */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
+              <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center text-[11px] font-black">
+                1
+              </span>
+              Paso 1: Selecciona tu Café
             </label>
-            <select
-              value={selectedCoffee.id}
-              onChange={(e) => setSelectedCoffee(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 font-serif font-bold text-stone-900 dark:text-stone-100 text-sm focus:border-amber-500 focus:outline-none"
-            >
-              {coffees.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name} — {c.origin} ({c.process})
-                </option>
-              ))}
-            </select>
+            <span className="text-xs text-stone-400 hidden sm:inline">
+              Origen: {selectedCoffee.origin}
+            </span>
           </div>
 
-          {/* Quick Info Chip */}
-          <div className="flex items-center gap-3 bg-stone-100/60 dark:bg-stone-950/60 p-3 rounded-xl border border-stone-200/60 dark:border-stone-800 text-xs">
-            <div className="space-y-1">
-              <div className="text-stone-500 dark:text-stone-400 font-mono text-[11px]">
-                {selectedCoffee.variety} • {selectedCoffee.altitude ? `${selectedCoffee.altitude}m` : 'Especialidad'}
-              </div>
-              <div className="text-stone-800 dark:text-stone-200 font-medium">
-                Notas: {selectedCoffee.tastingNotes.slice(0, 3).join(', ')}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="md:col-span-2">
+              <select
+                value={selectedCoffee.id}
+                onChange={(e) => setSelectedCoffee(e.target.value)}
+                className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-700 font-serif font-bold text-stone-900 dark:text-stone-100 text-sm focus:border-amber-500 focus:outline-none"
+              >
+                {coffees.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} — {c.origin} ({c.process}, {c.roastLevel})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2 bg-stone-100/70 dark:bg-stone-950/70 p-3 rounded-2xl border border-stone-200/60 dark:border-stone-800 text-xs">
+              <div className="text-stone-600 dark:text-stone-300 leading-snug truncate">
+                <span className="font-semibold">{selectedCoffee.variety}</span>
+                <span className="text-stone-400 block text-[11px] truncate">
+                  Notas: {selectedCoffee.tastingNotes.slice(0, 3).join(', ')}
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Method Horizontal Pills */}
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2">
-            Método de Extracción
+        {/* Step 2: Choose Method */}
+        <div className="pt-4 border-t border-stone-100 dark:border-stone-800">
+          <label className="block text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-3 flex items-center gap-1.5">
+            <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center text-[11px] font-black">
+              2
+            </span>
+            Paso 2: Elige el Método de Extracción
           </label>
-          <div className="flex flex-wrap gap-2">
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
             {enabledMethods.map((mId) => {
               const m = BREW_METHODS[mId];
               const isSelected = selectedMethodId === mId;
               return (
                 <button
                   key={mId}
+                  type="button"
                   onClick={() => handleSelectMethod(mId)}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                  className={`p-3 rounded-2xl text-xs font-bold transition-all text-center flex flex-col items-center justify-center gap-1 ${
                     isSelected
-                      ? 'bg-amber-600 text-white shadow-md shadow-amber-900/30 ring-1 ring-amber-500'
-                      : 'bg-stone-100 dark:bg-stone-950 hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800'
+                      ? 'bg-amber-600 text-white shadow-md shadow-amber-900/30 ring-2 ring-amber-500 scale-[1.02]'
+                      : 'bg-stone-100/80 dark:bg-stone-950 hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800'
                   }`}
                 >
-                  <span>{m.name}</span>
+                  <span className="text-sm">☕</span>
+                  <span className="truncate w-full">{m.name}</span>
                 </button>
               );
             })}
@@ -151,49 +175,56 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
 
       {/* Recipe Parameters Dashboard */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {/* Card 1: Grinder Dial (Highlighted Hero) */}
-        <div className="md:col-span-2 p-5 rounded-2xl bg-gradient-to-br from-amber-950/70 via-stone-900 to-stone-950 border border-amber-500/40 text-stone-100 shadow-xl relative overflow-hidden">
-          <div className="flex items-start justify-between">
-            <div>
-              <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-400">
-                <Sliders className="w-3.5 h-3.5" />
-                Molienda Calibrada
+        {/* Card 1: Grinder Setting (Hero focus) */}
+        <div className="md:col-span-2 p-6 rounded-3xl bg-gradient-to-br from-amber-950/70 via-stone-900 to-stone-950 border border-amber-500/40 text-stone-100 shadow-xl relative overflow-hidden flex flex-col justify-between">
+          <div>
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-400">
+                  <Sliders className="w-3.5 h-3.5" />
+                  Molienda Calibrada
+                </div>
+                <div className="text-4xl sm:text-5xl font-serif font-black text-amber-300 mt-2">
+                  {recipe.grindSettingFormatted}
+                </div>
+                <div className="text-xs text-stone-300 mt-1">
+                  Ajuste en tu molinillo: <strong className="text-amber-200">{grinder.name}</strong>
+                </div>
               </div>
-              <div className="text-4xl font-serif font-black text-amber-300 mt-2">
-                {recipe.grindSettingFormatted}
-              </div>
-              <div className="text-xs text-stone-400 mt-1">
-                Para tu molinillo: <strong className="text-stone-200">{grinder.name}</strong>
-              </div>
+
+              <button
+                type="button"
+                onClick={onOpenGrinderModal}
+                className="text-[11px] px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-semibold transition-colors"
+              >
+                Cambiar Molinillo
+              </button>
             </div>
 
-            <button
-              onClick={onOpenGrinderModal}
-              className="text-[11px] px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-medium transition-colors"
-            >
-              Cambiar
-            </button>
+            {/* Dial-in Auto-Adjustment notice */}
+            {recipe.dialInOffset !== 0 ? (
+              <div className="mt-4 p-3 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-xs text-amber-200 flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>
+                  <strong>Auto-ajustado por feedback previo:</strong>{' '}
+                  {recipe.dialInOffset > 0 ? `+${recipe.dialInOffset}` : recipe.dialInOffset} paso(s){' '}
+                  {recipe.dialInOffset > 0 ? 'más gruesa' : 'más fina'} para equilibrar la taza.
+                </span>
+              </div>
+            ) : (
+              <p className="mt-4 text-xs text-stone-400 leading-relaxed">
+                {recipe.grindRecommendationReason}
+              </p>
+            )}
           </div>
 
-          {/* Auto Dial-in status indicator */}
-          {recipe.dialInOffset !== 0 ? (
-            <div className="mt-4 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>
-                <strong>Ajuste de cata activo:</strong>{' '}
-                {recipe.dialInOffset > 0 ? `+${recipe.dialInOffset}` : recipe.dialInOffset} paso(s){' '}
-                {recipe.dialInOffset > 0 ? 'más gruesa' : 'más fina'} tras tu último feedback.
-              </span>
-            </div>
-          ) : (
-            <p className="mt-4 text-xs text-stone-400 leading-relaxed">
-              {recipe.grindRecommendationReason}
-            </p>
-          )}
+          <div className="mt-4 pt-3 border-t border-stone-800 text-[11px] text-stone-400">
+            Escala configurada: {grinder.minScale} a {grinder.maxScale} (paso {grinder.stepSize})
+          </div>
         </div>
 
-        {/* Card 2: Water & Dose */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm flex flex-col justify-between">
+        {/* Card 2: Dose & Water Ratio */}
+        <div className="p-6 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm flex flex-col justify-between">
           <div>
             <div className="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 flex items-center gap-1.5">
               <Scale className="w-3.5 h-3.5 text-amber-500" />
@@ -201,25 +232,25 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
             </div>
 
             <div className="mt-2 flex items-baseline gap-2">
-              <span className="text-3xl font-black font-serif text-stone-900 dark:text-stone-100">
+              <span className="text-4xl font-black font-serif text-stone-900 dark:text-stone-100">
                 {recipe.doseGrams}g
               </span>
-              <span className="text-xs text-stone-500">café</span>
+              <span className="text-xs text-stone-400 font-medium">café en grano</span>
             </div>
 
-            <div className="text-xs text-stone-500 dark:text-stone-400 mt-1">
-              Ratio 1:{recipe.ratio} ➔ <strong className="text-amber-600 dark:text-amber-400">{recipe.totalWaterGrams}g</strong> agua
+            <div className="text-xs text-stone-600 dark:text-stone-400 mt-1">
+              Ratio 1:{recipe.ratio} ➔ <strong className="text-amber-600 dark:text-amber-400 font-bold">{recipe.totalWaterGrams}g</strong> agua
             </div>
           </div>
 
-          {/* Quick dose adjusters */}
-          <div className="mt-4 flex items-center gap-1.5 pt-3 border-t border-stone-200 dark:border-stone-800">
+          {/* Quick Dose Buttons */}
+          <div className="mt-4 flex items-center gap-1 pt-3 border-t border-stone-100 dark:border-stone-800">
             {[12, 15, 18, 20, 25].map((d) => (
               <button
                 key={d}
                 type="button"
                 onClick={() => setDoseGrams(d)}
-                className={`flex-1 py-1 rounded-md text-[11px] font-semibold transition-colors ${
+                className={`flex-1 py-1.5 rounded-lg text-[11px] font-bold transition-colors ${
                   doseGrams === d
                     ? 'bg-amber-600 text-white'
                     : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-200'
@@ -232,7 +263,7 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
         </div>
 
         {/* Card 3: Water Temp & Time */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm flex flex-col justify-between">
+        <div className="p-6 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm flex flex-col justify-between">
           <div>
             <div className="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 flex items-center gap-1.5">
               <Thermometer className="w-3.5 h-3.5 text-amber-500" />
@@ -240,41 +271,41 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
             </div>
 
             <div className="mt-2 flex items-baseline gap-2">
-              <span className="text-3xl font-black font-serif text-amber-600 dark:text-amber-400">
+              <span className="text-4xl font-black font-serif text-amber-600 dark:text-amber-400">
                 {recipe.waterTempCelsius}°C
               </span>
-              <span className="text-xs text-stone-500">agua</span>
+              <span className="text-xs text-stone-400 font-medium">temp. de hervidor</span>
             </div>
 
-            <div className="text-xs text-stone-500 dark:text-stone-400 mt-1 flex items-center gap-1">
-              <Clock className="w-3 h-3 text-stone-400" />
+            <div className="text-xs text-stone-600 dark:text-stone-400 mt-1 flex items-center gap-1">
+              <Clock className="w-3.5 h-3.5 text-stone-400" />
               <span>
-                Tiempo est.: ~{Math.floor(recipe.totalEstimatedTimeSeconds / 60)}:
+                Duración: ~{Math.floor(recipe.totalEstimatedTimeSeconds / 60)}:
                 {String(recipe.totalEstimatedTimeSeconds % 60).padStart(2, '0')} min
               </span>
             </div>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-stone-200 dark:border-stone-800 text-[11px] text-stone-500 dark:text-stone-400">
-            Ajustada para tueste <strong>{selectedCoffee.roastLevel}</strong> y proceso <strong>{selectedCoffee.process}</strong>.
+          <div className="mt-4 pt-3 border-t border-stone-100 dark:border-stone-800 text-[11px] text-stone-500 dark:text-stone-400">
+            Filtro recomendado: <strong className="text-stone-700 dark:text-stone-300">{methodDetails.filterType}</strong>
           </div>
         </div>
       </div>
 
-      {/* Steps Timeline */}
-      <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-2xl p-6 shadow-sm space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-stone-200 dark:border-stone-800">
+      {/* Step by Step Timeline */}
+      <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-3xl p-6 sm:p-7 shadow-sm space-y-5">
+        <div className="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-stone-800">
           <div>
-            <h3 className="font-bold font-serif text-lg text-stone-900 dark:text-stone-100 flex items-center gap-2">
+            <h3 className="font-serif font-black text-xl text-stone-900 dark:text-stone-100 flex items-center gap-2">
               <Clock className="w-5 h-5 text-amber-500" />
               Guía de Vertidos Paso a Paso
             </h3>
-            <p className="text-xs text-stone-500 dark:text-stone-400">
-              Sigue el cronómetro en el Modo Extracción interactivo.
+            <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+              El cronómetro interactivo te guiará con avisos acústicos en cada etapa.
             </p>
           </div>
 
-          <div className="text-xs font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-3 py-1 rounded-xl">
+          <div className="text-xs font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/20">
             Total {recipe.totalWaterGrams}g
           </div>
         </div>
@@ -283,15 +314,15 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
           {recipe.steps.map((step, idx) => (
             <div
               key={step.id}
-              className="flex items-start gap-4 p-3.5 rounded-xl bg-stone-50 dark:bg-stone-950/70 border border-stone-200/80 dark:border-stone-800/80"
+              className="flex items-start gap-4 p-4 rounded-2xl bg-stone-50 dark:bg-stone-950/70 border border-stone-200/80 dark:border-stone-800/80"
             >
-              <div className="w-7 h-7 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center font-mono font-bold text-xs text-amber-600 dark:text-amber-400 shrink-0">
+              <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center font-mono font-black text-xs text-amber-600 dark:text-amber-400 shrink-0">
                 {idx + 1}
               </div>
 
               <div className="flex-1">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                  <span className="font-semibold text-sm text-stone-900 dark:text-stone-100">
+                  <span className="font-bold text-sm text-stone-900 dark:text-stone-100">
                     {step.title}
                   </span>
                   <div className="flex items-center gap-2 text-xs font-mono">
@@ -311,29 +342,34 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
           ))}
         </div>
 
-        {/* Barista Tips */}
+        {/* Tips */}
         {recipe.tips.length > 0 && (
-          <div className="mt-4 p-3.5 rounded-xl bg-amber-500/5 border border-amber-500/20 text-xs text-stone-700 dark:text-stone-300 space-y-1">
+          <div className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20 text-xs text-stone-700 dark:text-stone-300 space-y-1">
             <span className="font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5" /> Consejos del Barista:
+              <Sparkles className="w-4 h-4" /> Consejo para este café:
             </span>
             {recipe.tips.map((tip, i) => (
-              <p key={i} className="text-stone-600 dark:text-stone-400">
+              <p key={i} className="text-stone-600 dark:text-stone-400 leading-relaxed">
                 • {tip}
               </p>
             ))}
           </div>
         )}
 
-        {/* Big Action Button */}
-        <div className="pt-4">
+        {/* Main CTA to launch timer */}
+        <div className="pt-2">
           <button
+            type="button"
             onClick={onStartBrewing}
-            className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-500 text-stone-950 font-bold text-base transition-all shadow-xl shadow-amber-900/30 hover:shadow-amber-500/20 flex items-center justify-center gap-3 active:scale-[0.99]"
+            className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-stone-950 font-black text-base transition-all shadow-xl shadow-amber-900/40 flex items-center justify-center gap-3 active:scale-[0.99] group"
           >
-            <Play className="w-5 h-5 fill-stone-950" />
-            Iniciar Modo Extracción (Temporizador y Balanza)
+            <Play className="w-5 h-5 fill-stone-950 group-hover:scale-110 transition-transform" />
+            <span>Iniciar Cronómetro de Extracción con Sonido</span>
           </button>
+          <p className="text-center text-[11px] text-stone-400 mt-2 flex items-center justify-center gap-1.5">
+            <Volume2 className="w-3.5 h-3.5 text-amber-500" />
+            Incluye beeps de cuenta atrás 3-2-1 y campanilla sintética al terminar cada paso.
+          </p>
         </div>
       </div>
     </div>

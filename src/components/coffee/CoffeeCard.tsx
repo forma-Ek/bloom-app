@@ -165,25 +165,22 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({
       </div>
 
       {/* Select / Active Action */}
-      <div className="mt-5 pt-3 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between">
-        {isSelected ? (
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-600 dark:text-amber-400">
-            <CheckCircle className="w-4 h-4" />
-            Café Activo para Recetas
-          </div>
-        ) : (
-          <span className="text-xs text-stone-400">Listo para calibrar</span>
-        )}
+      <div className="mt-5 pt-3 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between gap-2">
+        <span className="text-[11px] text-stone-500 dark:text-stone-400">
+          {isSelected ? '✓ Seleccionado' : 'Listo para preparar'}
+        </span>
 
         <button
+          type="button"
           onClick={() => onSelect(coffee)}
-          className={`text-xs px-3.5 py-2 rounded-xl font-semibold transition-all ${
+          className={`text-xs px-4 py-2 rounded-xl font-bold transition-all flex items-center gap-1.5 ${
             isSelected
-              ? 'bg-amber-600 text-white shadow-md shadow-amber-900/30'
-              : 'bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200'
+              ? 'bg-amber-600 hover:bg-amber-500 text-white shadow-md shadow-amber-900/30'
+              : 'bg-stone-900 dark:bg-stone-800 hover:bg-amber-600 dark:hover:bg-amber-600 text-white dark:text-stone-200 hover:text-white'
           }`}
         >
-          {isSelected ? 'Ver Receta' : 'Elegir para Preparar'}
+          <span>Preparar Receta</span>
+          <span>➔</span>
         </button>
       </div>
     </div>

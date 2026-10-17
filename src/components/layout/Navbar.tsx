@@ -11,14 +11,15 @@ import {
   Volume2,
   VolumeX,
   Sparkles,
-  History,
-  BookOpen,
   Settings,
+  Disc,
 } from 'lucide-react';
 
+export type MainTab = 'coffees' | 'recipe' | 'equipment';
+
 interface NavbarProps {
-  activeTab: 'recipe' | 'catalog' | 'equipment' | 'history';
-  setActiveTab: (tab: 'recipe' | 'catalog' | 'equipment' | 'history') => void;
+  activeTab: MainTab;
+  setActiveTab: (tab: MainTab) => void;
   onOpenGrinderModal: () => void;
 }
 
@@ -32,7 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const handleSoundToggle = () => {
     toggleSound();
-    soundManager.setMuted(soundEnabled); // toggle current
+    soundManager.setMuted(soundEnabled);
     if (!soundEnabled) {
       soundManager.playToggleSound();
     }
@@ -40,11 +41,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-stone-200/80 dark:border-stone-800/80 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-md transition-colors">
+      <header className="sticky top-0 z-40 w-full border-b border-stone-200/80 dark:border-stone-800/80 bg-stone-50/90 dark:bg-stone-950/90 backdrop-blur-md transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-white shadow-md shadow-amber-900/20">
+          {/* Logo & Brand */}
+          <div
+            onClick={() => setActiveTab('coffees')}
+            className="flex items-center gap-3 cursor-pointer group"
+          >
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-white shadow-md shadow-amber-900/20 group-hover:scale-105 transition-transform">
               <Coffee className="w-5 h-5" />
             </div>
             <div>
@@ -52,85 +56,76 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="font-serif font-black tracking-wider text-xl bg-gradient-to-r from-amber-600 via-amber-700 to-amber-900 dark:from-amber-200 dark:via-amber-400 dark:to-amber-500 bg-clip-text text-transparent">
                   BLOOM
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                  Specialty
+                <span className="text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                  Specialty Lab
                 </span>
               </div>
               <p className="text-[10px] text-stone-500 dark:text-stone-400 tracking-tight hidden sm:block">
-                Precision Extraction & Dial-In Lab
+                Café de Especialidad & Recetas Inteligentes
               </p>
             </div>
           </div>
 
-          {/* Navigation Tabs */}
-          <nav className="hidden md:flex items-center gap-1 bg-stone-200/50 dark:bg-stone-900/50 p-1 rounded-xl border border-stone-200 dark:border-stone-800">
+          {/* Main 3 Navigation Tabs (Desktop) */}
+          <nav className="hidden md:flex items-center gap-1.5 bg-stone-200/60 dark:bg-stone-900/70 p-1.5 rounded-2xl border border-stone-200 dark:border-stone-800">
+            {/* Tab 1: Mis Cafés */}
+            <button
+              onClick={() => setActiveTab('coffees')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+                activeTab === 'coffees'
+                  ? 'bg-amber-600 text-white shadow-md shadow-amber-900/30'
+                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60'
+              }`}
+            >
+              <Coffee className="w-4 h-4" />
+              Mis Cafés
+            </button>
+
+            {/* Tab 2: Preparar Receta */}
             <button
               onClick={() => setActiveTab('recipe')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
                 activeTab === 'recipe'
-                  ? 'bg-amber-600 text-white shadow-sm font-semibold'
-                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-800/50'
+                  ? 'bg-amber-600 text-white shadow-md shadow-amber-900/30'
+                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60'
               }`}
             >
-              <Sliders className="w-3.5 h-3.5" />
-              Receta & Timer
+              <Sliders className="w-4 h-4" />
+              Preparar Receta
             </button>
-            <button
-              onClick={() => setActiveTab('catalog')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                activeTab === 'catalog'
-                  ? 'bg-amber-600 text-white shadow-sm font-semibold'
-                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-800/50'
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              Cafés
-            </button>
+
+            {/* Tab 3: Mi Equipo */}
             <button
               onClick={() => setActiveTab('equipment')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
                 activeTab === 'equipment'
-                  ? 'bg-amber-600 text-white shadow-sm font-semibold'
-                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-800/50'
+                  ? 'bg-amber-600 text-white shadow-md shadow-amber-900/30'
+                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60'
               }`}
             >
-              <Settings className="w-3.5 h-3.5" />
-              Equipo & Molinillo
-            </button>
-            <button
-              onClick={() => setActiveTab('history')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                activeTab === 'history'
-                  ? 'bg-amber-600 text-white shadow-sm font-semibold'
-                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-800/50'
-              }`}
-            >
-              <History className="w-3.5 h-3.5" />
-              Historial Dial-In
+              <Disc className="w-4 h-4" />
+              Mi Equipo
             </button>
           </nav>
 
           {/* Right Controls */}
           <div className="flex items-center gap-2">
-            {/* Grinder Quick Badge */}
+            {/* Active Grinder Badge button */}
             <button
-              onClick={onOpenGrinderModal}
-              title="Configurar Molinillo y Escala"
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-700 dark:text-amber-400 text-xs font-medium transition-colors"
+              onClick={() => setActiveTab('equipment')}
+              title={`Molinillo activo: ${grinder.name}. Haz clic para cambiar.`}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-700 dark:text-amber-400 text-xs font-semibold transition-colors"
             >
-              <Settings className="w-3.5 h-3.5" />
+              <Disc className="w-3.5 h-3.5" />
               <span className="hidden sm:inline font-mono text-[11px] max-w-[120px] truncate">
                 {grinder.name}
               </span>
-              <span className="text-[10px] bg-amber-500/20 px-1 py-0.2 rounded font-mono">
-                {grinder.minScale}-{grinder.maxScale}
-              </span>
             </button>
 
-            {/* AI Vision Status */}
+            {/* AI Vision Status Button */}
             <button
               onClick={() => setApiKeyModalOpen(true)}
-              title="Configurar Gemini 1.5 Flash Vision"
+              title="Configuración de IA Gemini (Escaneo de bolsas)"
               className="p-2 rounded-xl bg-stone-100 dark:bg-stone-900 hover:bg-stone-200 dark:hover:bg-stone-800 border border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 transition-colors"
             >
               <Sparkles
@@ -140,10 +135,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               />
             </button>
 
-            {/* Sound Toggle */}
+            {/* Sound Mute Toggle */}
             <button
               onClick={handleSoundToggle}
-              title={soundEnabled ? 'Silenciar sonidos de extracción' : 'Activar sonidos de aviso'}
+              title={soundEnabled ? 'Silenciar sonidos' : 'Activar sonido en temporizador'}
               className="p-2 rounded-xl bg-stone-100 dark:bg-stone-900 hover:bg-stone-200 dark:hover:bg-stone-800 border border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 transition-colors"
             >
               {soundEnabled ? (
@@ -153,56 +148,45 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </button>
 
-            {/* Theme Toggle */}
+            {/* Theme Toggle (Dark/Light) */}
             <ThemeToggle />
           </div>
         </div>
 
-        {/* Mobile Submenu */}
-        <div className="flex md:hidden items-center justify-around border-t border-stone-200 dark:border-stone-800/80 px-2 py-1.5 bg-stone-100/90 dark:bg-stone-900/90">
+        {/* Mobile Submenu (3 Tabs) */}
+        <div className="grid grid-cols-3 border-t border-stone-200 dark:border-stone-800/80 px-2 py-1.5 bg-stone-100/90 dark:bg-stone-900/90 md:hidden">
+          <button
+            onClick={() => setActiveTab('coffees')}
+            className={`flex flex-col items-center gap-1 text-[11px] py-1.5 rounded-xl font-bold transition-all ${
+              activeTab === 'coffees'
+                ? 'text-amber-600 dark:text-amber-400 bg-amber-500/10'
+                : 'text-stone-500 dark:text-stone-400'
+            }`}
+          >
+            <Coffee className="w-4 h-4" />
+            Mis Cafés
+          </button>
           <button
             onClick={() => setActiveTab('recipe')}
-            className={`flex flex-col items-center gap-0.5 text-[10px] py-1 px-2 rounded-lg font-medium ${
+            className={`flex flex-col items-center gap-1 text-[11px] py-1.5 rounded-xl font-bold transition-all ${
               activeTab === 'recipe'
-                ? 'text-amber-600 dark:text-amber-400 font-bold'
+                ? 'text-amber-600 dark:text-amber-400 bg-amber-500/10'
                 : 'text-stone-500 dark:text-stone-400'
             }`}
           >
             <Sliders className="w-4 h-4" />
-            Receta
-          </button>
-          <button
-            onClick={() => setActiveTab('catalog')}
-            className={`flex flex-col items-center gap-0.5 text-[10px] py-1 px-2 rounded-lg font-medium ${
-              activeTab === 'catalog'
-                ? 'text-amber-600 dark:text-amber-400 font-bold'
-                : 'text-stone-500 dark:text-stone-400'
-            }`}
-          >
-            <BookOpen className="w-4 h-4" />
-            Cafés
+            Preparar Receta
           </button>
           <button
             onClick={() => setActiveTab('equipment')}
-            className={`flex flex-col items-center gap-0.5 text-[10px] py-1 px-2 rounded-lg font-medium ${
+            className={`flex flex-col items-center gap-1 text-[11px] py-1.5 rounded-xl font-bold transition-all ${
               activeTab === 'equipment'
-                ? 'text-amber-600 dark:text-amber-400 font-bold'
+                ? 'text-amber-600 dark:text-amber-400 bg-amber-500/10'
                 : 'text-stone-500 dark:text-stone-400'
             }`}
           >
-            <Settings className="w-4 h-4" />
-            Equipo
-          </button>
-          <button
-            onClick={() => setActiveTab('history')}
-            className={`flex flex-col items-center gap-0.5 text-[10px] py-1 px-2 rounded-lg font-medium ${
-              activeTab === 'history'
-                ? 'text-amber-600 dark:text-amber-400 font-bold'
-                : 'text-stone-500 dark:text-stone-400'
-            }`}
-          >
-            <History className="w-4 h-4" />
-            Historial
+            <Disc className="w-4 h-4" />
+            Mi Equipo
           </button>
         </div>
       </header>

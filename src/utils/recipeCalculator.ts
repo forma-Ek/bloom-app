@@ -108,24 +108,24 @@ export const BREW_METHODS: Record<BrewMethodId, BrewMethodDetails> = {
 };
 
 export const DEFAULT_GRINDER: GrinderConfig = {
-  id: 'grinder-default',
-  name: 'Dial Estándar de Precisión',
+  id: 'grinder-timemore-s3',
+  name: 'Timemore S3',
   scaleType: 'dial',
   minScale: 0,
   maxScale: 9,
   stepSize: 0.5,
-  description: 'Molinillo con dial del 0 al 9 en medios pasos (0, 0.5, 1, 1.5 ... 9)',
+  description: 'Dial externo de precisión con escala de 0 al 9 en medios pasos (ej. Dial 5.5, Dial 6).',
 };
 
 export const POPULAR_GRINDERS: GrinderConfig[] = [
   {
-    id: 'grinder-dial-0-9',
-    name: 'Dial Numérico 0 - 9 (Medios pasos)',
+    id: 'grinder-timemore-s3',
+    name: 'Timemore S3',
     scaleType: 'dial',
     minScale: 0,
     maxScale: 9,
     stepSize: 0.5,
-    description: 'Ideal para Fellow Ode, Baratza Sette o diales con escala de 0 a 9.',
+    description: 'Dial externo de precisión (0 al 9 con medios pasos: Dial 5.5, Dial 6...).',
   },
   {
     id: 'grinder-comandante',
@@ -137,31 +137,40 @@ export const POPULAR_GRINDERS: GrinderConfig[] = [
     description: 'Escala de clicks desde cero. Espresso 8-12, V60 22-26, Prensa 28-32.',
   },
   {
-    id: 'grinder-timemore',
+    id: 'grinder-baratza-encore',
+    name: 'Baratza Encore / ESP',
+    scaleType: 'numbers',
+    minScale: 1,
+    maxScale: 40,
+    stepSize: 1,
+    description: 'Tolva graduada de 40 posiciones (Filtro 15-28, Prensa 28-36).',
+  },
+  {
+    id: 'grinder-1zpresso',
+    name: '1Zpresso K-Ultra',
+    scaleType: 'numbers',
+    minScale: 1,
+    maxScale: 9,
+    stepSize: 0.1,
+    description: 'Anillo de ajuste micrométrico externo de 1.0 a 9.0 con pasos de 0.1.',
+  },
+  {
+    id: 'grinder-fellow-ode',
+    name: 'Fellow Ode Gen 2',
+    scaleType: 'dial',
+    minScale: 1,
+    maxScale: 11,
+    stepSize: 0.5,
+    description: 'Dial frontal de 1 a 11 con pasos medios optimizado para filtro.',
+  },
+  {
+    id: 'grinder-timemore-c3',
     name: 'Timemore Chestnut C2 / C3',
     scaleType: 'clicks',
     minScale: 0,
     maxScale: 30,
     stepSize: 1,
-    description: 'Clicks desde el punto cero. Espresso 9-11, V60 16-19, Prensa 22-25.',
-  },
-  {
-    id: 'grinder-1zpresso',
-    name: '1Zpresso K-Ultra / K-Plus',
-    scaleType: 'numbers',
-    minScale: 1,
-    maxScale: 9,
-    stepSize: 0.1,
-    description: 'Ajuste micrométrico externo. Rango continuo de 1.0 a 9.0.',
-  },
-  {
-    id: 'grinder-df64',
-    name: 'DF64 Gen 2 (Single Dose)',
-    scaleType: 'numbers',
-    minScale: 0,
-    maxScale: 90,
-    stepSize: 1,
-    description: 'Dial rotativo con 90 marcas continuas para filtro y espresso.',
+    description: 'Clicks internos. V60 16-19 clicks, Prensa 22-25 clicks.',
   },
 ];
 
@@ -191,13 +200,16 @@ export function calculateGrindSetting(
 
   let formatted = '';
   switch (grinder.scaleType) {
+    case 'dial':
+      formatted = `Dial ${steppedValue}`;
+      break;
     case 'clicks':
       formatted = `${steppedValue} Clicks`;
       break;
-    case 'dial':
+    case 'numbers':
       formatted = `Paso ${steppedValue}`;
       break;
-    case 'numbers':
+    default:
       formatted = `${steppedValue}`;
       break;
   }
