@@ -7,15 +7,16 @@ import { BREW_METHODS, POPULAR_GRINDERS, calculateGrindSetting } from '@/utils/r
 import {
   Settings,
   Disc,
-  CheckCircle2,
-  Sliders,
   Check,
   Layers,
   Thermometer,
   Clock,
   Filter,
   Sparkles,
-  Info,
+  Sliders,
+  CheckSquare,
+  Square,
+  Flame,
 } from 'lucide-react';
 
 interface EquipmentSectionProps {
@@ -32,11 +33,20 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
     setGrinder,
     enabledMethods,
     toggleMethod,
+    setMethodEnabled,
     selectedMethodId,
     setSelectedMethod,
   } = useCoffeeStore();
 
-  const allMethods: BrewMethodId[] = ['v60', 'aeropress', 'french_press', 'chemex', 'espresso', 'cold_brew'];
+  const allMethods: BrewMethodId[] = [
+    'v60',
+    'aeropress',
+    'french_press',
+    'chemex',
+    'espresso',
+    'kalita_wave',
+    'cold_brew',
+  ];
 
   // Test slider value in dial simulator
   const [testSliderValue, setTestSliderValue] = useState<number>(
@@ -53,7 +63,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
   };
 
   return (
-    <div className="space-y-10 animate-fade-in">
+    <div className="space-y-12 animate-fade-in">
       {/* 1. Grinder Section */}
       <section className="space-y-6">
         <div>
@@ -62,7 +72,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
             Configuración de Molinillo
           </h2>
           <p className="text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-xl">
-            Selecciona tu modelo de molinillo. BLOOM adaptará las recetas en tiempo real para indicarte el dial o número de clicks exacto.
+            Selecciona el molinillo que utilizas. BLOOM recalculará y adaptará automáticamente las recetas para mostrarte el dial o clicks exacto.
           </p>
         </div>
 
@@ -105,7 +115,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 
                 <div className="mt-4 pt-3 border-t border-stone-200/60 dark:border-stone-800 flex items-center justify-between text-xs">
                   <span className="font-mono text-stone-600 dark:text-stone-400">
-                    Rango: <strong>{model.minScale} - {model.maxScale}</strong> (paso {model.stepSize})
+                    Escala: <strong>{model.minScale} - {model.maxScale}</strong> (paso {model.stepSize})
                   </span>
                   {isTimemoreS3 && (
                     <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-500">
@@ -129,7 +139,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
               Personalizar Molinillo
             </h4>
             <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
-              Configura tus propios mínimos, máximos o tamaño de paso.
+              Configura tus propios rangos de dial, clicks y pasos.
             </p>
           </div>
         </div>
@@ -189,57 +199,33 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
             />
 
             <div className="flex justify-between text-[11px] text-stone-500 font-mono">
-              <span>{grinder.minScale} (Más Fino / Espresso)</span>
+              <span>{grinder.minScale} (Fino / Espresso)</span>
               <span>{((grinder.maxScale + grinder.minScale) / 2).toFixed(1)} (Medio / Filtro)</span>
-              <span>{grinder.maxScale} (Más Grueso / Prensa)</span>
-            </div>
-          </div>
-
-          {/* Scale Translation Table for all Methods */}
-          <div className="pt-2 space-y-2">
-            <div className="text-xs font-semibold text-stone-300">
-              Punto de molienda calibrado para cada método con <strong className="text-amber-300">{grinder.name}</strong>:
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-              {allMethods.map((mId) => {
-                const method = BREW_METHODS[mId];
-                const grind = calculateGrindSetting(method.relativeGrindNormalized, grinder);
-                const isSelected = selectedMethodId === mId;
-
-                return (
-                  <div
-                    key={mId}
-                    className={`p-3 rounded-2xl border text-center transition-all ${
-                      isSelected
-                        ? 'bg-amber-500/20 border-amber-500 text-amber-200'
-                        : 'bg-stone-950/50 border-stone-800 text-stone-300'
-                    }`}
-                  >
-                    <div className="text-[11px] font-medium text-stone-400 truncate">{method.name}</div>
-                    <div className="text-sm font-mono font-bold text-amber-400 mt-1">
-                      {grind.formatted}
-                    </div>
-                  </div>
-                );
-              })}
+              <span>{grinder.maxScale} (Grueso / Prensa)</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Methods of Preparation Section */}
+      {/* 2. Methods of Preparation Section (Checkboxes / Switches) */}
       <section className="space-y-6 pt-6 border-t border-stone-200 dark:border-stone-800">
-        <div>
-          <h2 className="text-2xl font-bold font-serif text-stone-900 dark:text-stone-100 flex items-center gap-2.5">
-            <Layers className="w-6 h-6 text-amber-500" />
-            Métodos de Preparación Habilitados
-          </h2>
-          <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
-            Marca los accesorios que tienes en tu estación de café para utilizarlos en el generador de recetas.
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 className="text-2xl font-bold font-serif text-stone-900 dark:text-stone-100 flex items-center gap-2.5">
+              <Layers className="w-6 h-6 text-amber-500" />
+              Tus Métodos de Extracción
+            </h2>
+            <p className="text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-xl">
+              Marca las casillas de los métodos que tienes en casa. Los métodos seleccionados se destacarán como tu bloque principal en la pestaña <strong>Preparar Receta</strong>.
+            </p>
+          </div>
+
+          <div className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 self-start sm:self-auto">
+            {enabledMethods.length} de {allMethods.length} métodos activos
+          </div>
         </div>
 
+        {/* Checkbox Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {allMethods.map((methodId) => {
             const method = BREW_METHODS[methodId];
@@ -250,18 +236,18 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
             return (
               <div
                 key={methodId}
-                className={`relative rounded-3xl border transition-all p-5 flex flex-col justify-between ${
-                  isSelected
-                    ? 'bg-amber-500/5 dark:bg-amber-950/20 border-amber-500 shadow-md ring-1 ring-amber-500/30'
-                    : isEnabled
-                    ? 'bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800'
-                    : 'bg-stone-100/60 dark:bg-stone-950/40 border-dashed border-stone-300 dark:border-stone-800 opacity-60'
+                onClick={() => toggleMethod(methodId)}
+                className={`cursor-pointer rounded-2xl border-2 transition-all p-5 flex flex-col justify-between ${
+                  isEnabled
+                    ? 'bg-white dark:bg-stone-900 border-amber-500/80 dark:border-amber-500 shadow-sm'
+                    : 'bg-stone-100/50 dark:bg-stone-950/40 border-stone-200 dark:border-stone-800/80 opacity-70 hover:opacity-100'
                 }`}
               >
                 <div>
+                  {/* Top Checkbox & Name Header */}
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <span className="text-[10px] font-mono uppercase tracking-wider font-semibold text-amber-600 dark:text-amber-400">
+                      <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-amber-600 dark:text-amber-400">
                         Ratio 1:{method.defaultRatio}
                       </span>
                       <h3 className="text-lg font-bold font-serif text-stone-900 dark:text-stone-100 mt-0.5">
@@ -269,16 +255,32 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                       </h3>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => toggleMethod(methodId)}
-                      title={isEnabled ? 'Desactivar método' : 'Activar método'}
-                      className="p-1 text-stone-400 hover:text-amber-500 transition-colors"
-                    >
-                      <CheckCircle2
-                        className={`w-6 h-6 ${isEnabled ? 'text-amber-500' : 'text-stone-300 dark:text-stone-700'}`}
-                      />
-                    </button>
+                    {/* Interactive Checkbox Control */}
+                    <div className="flex items-center gap-1.5">
+                      <span
+                        className={`text-xs font-semibold px-2 py-0.5 rounded-lg transition-colors ${
+                          isEnabled
+                            ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300'
+                            : 'bg-stone-200 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
+                        }`}
+                      >
+                        {isEnabled ? 'Tengo este equipo' : 'No lo tengo'}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleMethod(methodId);
+                        }}
+                        className="text-amber-500 hover:text-amber-400 transition-colors"
+                      >
+                        {isEnabled ? (
+                          <CheckSquare className="w-6 h-6 text-amber-500 fill-amber-500/20" />
+                        ) : (
+                          <Square className="w-6 h-6 text-stone-400" />
+                        )}
+                      </button>
+                    </div>
                   </div>
 
                   <p className="text-xs text-stone-600 dark:text-stone-400 mt-2 leading-relaxed">
@@ -301,26 +303,19 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                   </div>
                 </div>
 
-                <div className="mt-5 pt-3 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between">
+                <div className="mt-4 pt-3 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
                   <span className="text-[11px] text-stone-400 truncate">
                     {method.filterType}
                   </span>
-                  {isEnabled && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedMethod(methodId);
-                        if (onSelectMethodAndBrew) onSelectMethodAndBrew(methodId);
-                      }}
-                      className={`text-xs px-3.5 py-1.5 rounded-xl font-semibold transition-all ${
-                        isSelected
-                          ? 'bg-amber-600 text-white'
-                          : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200'
-                      }`}
-                    >
-                      {isSelected ? 'Elegido' : 'Seleccionar'}
-                    </button>
-                  )}
+                  <span
+                    className={`text-[11px] font-semibold ${
+                      isSelected
+                        ? 'text-amber-600 dark:text-amber-400'
+                        : 'text-stone-400 hover:text-stone-600'
+                    }`}
+                  >
+                    {isSelected ? '★ Activo en receta' : 'Clic para activar/desactivar'}
+                  </span>
                 </div>
               </div>
             );

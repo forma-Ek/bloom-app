@@ -18,6 +18,8 @@ import {
   TrendingUp,
   Volume2,
   Layers,
+  Compass,
+  PlusCircle,
 } from 'lucide-react';
 
 interface RecipeGeneratorProps {
@@ -36,15 +38,35 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
     selectedMethodId,
     setSelectedMethod,
     enabledMethods,
+    toggleMethod,
     grinder,
     dialInStates,
   } = useCoffeeStore();
+
+  const allAvailableMethods: BrewMethodId[] = [
+    'v60',
+    'aeropress',
+    'french_press',
+    'chemex',
+    'espresso',
+    'kalita_wave',
+    'cold_brew',
+  ];
+
+  // Divide into Primary (owned by user) vs Secondary (other methods to explore)
+  const primaryMethods = useMemo(() => {
+    return allAvailableMethods.filter((mId) => enabledMethods.includes(mId));
+  }, [enabledMethods]);
+
+  const secondaryMethods = useMemo(() => {
+    return allAvailableMethods.filter((mId) => !enabledMethods.includes(mId));
+  }, [enabledMethods]);
 
   const selectedCoffee = useMemo(() => {
     return coffees.find((c) => c.id === selectedCoffeeId) || coffees[0];
   }, [coffees, selectedCoffeeId]);
 
-  const methodDetails = BREW_METHODS[selectedMethodId];
+  const methodDetails = BREW_METHODS[selectedMethodId] || BREW_METHODS['v60'];
 
   // Custom recipe overrides
   const [doseGrams, setDoseGrams] = useState<number>(methodDetails?.defaultDoseGrams || 15);
@@ -77,6 +99,8 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
     );
   }, [selectedCoffee, selectedMethodId, grinder, doseGrams, ratio, currentDialIn]);
 
+  const isCurrentMethodInEquipment = enabledMethods.includes(selectedMethodId);
+
   if (!selectedCoffee || !recipe) {
     return (
       <div className="p-12 text-center text-stone-400">
@@ -98,7 +122,7 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
         </p>
       </div>
 
-      {/* Step 1 & 2 Configurator Box */}
+      {/* Step 1 & Step 2 (Bloque Principal de Métodos) */}
       <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-3xl p-6 sm:p-7 shadow-sm space-y-6">
         {/* Step 1: Choose Coffee */}
         <div>
@@ -140,36 +164,64 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
           </div>
         </div>
 
-        {/* Step 2: Choose Method */}
+        {/* Step 2: BLOQUE PRINCIPAL (ÚNICAMENTE TUS MÉTODOS) */}
         <div className="pt-4 border-t border-stone-100 dark:border-stone-800">
-          <label className="block text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-3 flex items-center gap-1.5">
-            <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center text-[11px] font-black">
-              2
+          <div className="flex items-center justify-between mb-3">
+            <label className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
+              <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center text-[11px] font-black">
+                2
+              </span>
+              Paso 2: Elige el Método (Tus Métodos Activos)
+            </label>
+            <span className="text-[11px] text-stone-400">
+              {primaryMethods.length} {primaryMethods.length === 1 ? 'método en tu equipo' : 'métodos en tu equipo'}
             </span>
-            Paso 2: Elige el Método de Extracción
-          </label>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-            {enabledMethods.map((mId) => {
-              const m = BREW_METHODS[mId];
-              const isSelected = selectedMethodId === mId;
-              return (
-                <button
-                  key={mId}
-                  type="button"
-                  onClick={() => handleSelectMethod(mId)}
-                  className={`p-3 rounded-2xl text-xs font-bold transition-all text-center flex flex-col items-center justify-center gap-1 ${
-                    isSelected
-                      ? 'bg-amber-600 text-white shadow-md shadow-amber-900/30 ring-2 ring-amber-500 scale-[1.02]'
-                      : 'bg-stone-100/80 dark:bg-stone-950 hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800'
-                  }`}
-                >
-                  <span className="text-sm">☕</span>
-                  <span className="truncate w-full">{m.name}</span>
-                </button>
-              );
-            })}
           </div>
+
+          {/* Grid showing ONLY user's selected methods */}
+          {primaryMethods.length === 0 ? (
+            <div className="p-4 rounded-2xl border border-dashed border-stone-300 dark:border-stone-800 text-center text-xs text-stone-400">
+              No tienes ningún método activo. Activa tus cafeteras en la pestaña <strong>Mi Equipo</strong>.
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
+              {primaryMethods.map((mId) => {
+                const m = BREW_METHODS[mId];
+                const isSelected = selectedMethodId === mId;
+                return (
+                  <button
+                    key={mId}
+                    type="button"
+                    onClick={() => handleSelectMethod(mId)}
+                    className={`p-3.5 rounded-2xl text-xs font-bold transition-all text-center flex flex-col items-center justify-center gap-1 relative ${
+                      isSelected
+                        ? 'bg-amber-600 text-white shadow-lg shadow-amber-900/30 ring-2 ring-amber-500 scale-[1.02]'
+                        : 'bg-stone-100/90 dark:bg-stone-950 hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800'
+                    }`}
+                  >
+                    <span className="text-base">☕</span>
+                    <span className="truncate w-full font-serif">{m.name}</span>
+                    <span className="text-[10px] opacity-75 font-mono">1:{m.defaultRatio}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {!isCurrentMethodInEquipment && (
+            <div className="mt-3 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 flex items-center justify-between">
+              <span>
+                ★ Estás preparando con <strong>{methodDetails.name}</strong> (método explorado de la sección secundaria).
+              </span>
+              <button
+                type="button"
+                onClick={() => toggleMethod(selectedMethodId)}
+                className="text-[11px] underline text-amber-400 hover:text-amber-200 font-semibold"
+              >
+                Añadir a Mi Equipo
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -287,7 +339,7 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
           </div>
 
           <div className="mt-4 pt-3 border-t border-stone-100 dark:border-stone-800 text-[11px] text-stone-500 dark:text-stone-400">
-            Filtro recomendado: <strong className="text-stone-700 dark:text-stone-300">{methodDetails.filterType}</strong>
+            Filtro: <strong className="text-stone-700 dark:text-stone-300">{methodDetails.filterType}</strong>
           </div>
         </div>
       </div>
@@ -298,7 +350,7 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
           <div>
             <h3 className="font-serif font-black text-xl text-stone-900 dark:text-stone-100 flex items-center gap-2">
               <Clock className="w-5 h-5 text-amber-500" />
-              Guía de Vertidos Paso a Paso
+              Guía de Vertidos Paso a Paso ({recipe.methodName})
             </h3>
             <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
               El cronómetro interactivo te guiará con avisos acústicos en cada etapa.
@@ -346,7 +398,7 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
         {recipe.tips.length > 0 && (
           <div className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20 text-xs text-stone-700 dark:text-stone-300 space-y-1">
             <span className="font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4" /> Consejo para este café:
+              <Sparkles className="w-3.5 h-3.5" /> Consejo para este café:
             </span>
             {recipe.tips.map((tip, i) => (
               <p key={i} className="text-stone-600 dark:text-stone-400 leading-relaxed">
@@ -372,6 +424,49 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
           </p>
         </div>
       </div>
+
+      {/* BLOQUE SECUNDARIO ("Otros Métodos / Explorar") EN LA PARTE INFERIOR */}
+      {secondaryMethods.length > 0 && (
+        <div className="p-6 rounded-3xl bg-stone-100/60 dark:bg-stone-900/40 border-2 border-dashed border-stone-300 dark:border-stone-800/80 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 className="text-base font-bold font-serif text-stone-700 dark:text-stone-300 flex items-center gap-2">
+                <Compass className="w-4 h-4 text-amber-500" />
+                Otros Métodos / Explorar
+              </h3>
+              <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+                Métodos que no tienes en tu equipo. Puedes seleccionarlos para consultar la receta adaptada o probarlos igualmente.
+              </p>
+            </div>
+            <span className="text-[11px] font-mono text-stone-500">
+              {secondaryMethods.length} métodos disponibles
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
+            {secondaryMethods.map((mId) => {
+              const m = BREW_METHODS[mId];
+              const isSelected = selectedMethodId === mId;
+              return (
+                <button
+                  key={mId}
+                  type="button"
+                  onClick={() => handleSelectMethod(mId)}
+                  className={`p-3 rounded-2xl text-xs font-semibold transition-all text-center flex flex-col items-center justify-center gap-1 border ${
+                    isSelected
+                      ? 'bg-amber-600 text-white border-amber-600 shadow-md ring-2 ring-amber-500 scale-[1.02]'
+                      : 'bg-white/60 dark:bg-stone-950/60 hover:bg-white dark:hover:bg-stone-800 text-stone-600 dark:text-stone-400 border-stone-200 dark:border-stone-800 opacity-75 hover:opacity-100'
+                  }`}
+                >
+                  <span className="text-sm">☕</span>
+                  <span className="truncate w-full">{m.name}</span>
+                  <span className="text-[10px] opacity-70">1:{m.defaultRatio}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

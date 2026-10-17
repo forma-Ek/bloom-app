@@ -37,6 +37,7 @@ export interface CoffeeStoreState {
   setGrinder: (grinder: GrinderConfig) => void;
   saveCustomGrinder: (grinder: GrinderConfig) => void;
   toggleMethod: (methodId: BrewMethodId) => void;
+  setMethodEnabled: (methodId: BrewMethodId, enabled: boolean) => void;
   setSelectedMethod: (methodId: BrewMethodId) => void;
   addCoffee: (coffee: CoffeeBean) => void;
   updateCoffee: (coffee: CoffeeBean) => void;
@@ -101,7 +102,7 @@ export const useCoffeeStore = create<CoffeeStoreState>()(
     (set, get) => ({
       grinder: DEFAULT_GRINDER,
       customGrinders: POPULAR_GRINDERS,
-      enabledMethods: ['v60', 'aeropress', 'french_press', 'chemex', 'espresso', 'cold_brew'],
+      enabledMethods: ['v60', 'aeropress', 'french_press'],
       selectedMethodId: 'v60',
 
       coffees: INITIAL_COFFEES,
@@ -134,10 +135,20 @@ export const useCoffeeStore = create<CoffeeStoreState>()(
             const updated = current.filter((m) => m !== methodId);
             return {
               enabledMethods: updated,
-              selectedMethodId: state.selectedMethodId === methodId ? updated[0] : state.selectedMethodId,
             };
           } else {
             return { enabledMethods: [...current, methodId] };
+          }
+        }),
+
+      setMethodEnabled: (methodId, enabled) =>
+        set((state) => {
+          const current = state.enabledMethods;
+          if (enabled) {
+            return current.includes(methodId) ? state : { enabledMethods: [...current, methodId] };
+          } else {
+            if (current.length === 1 && current.includes(methodId)) return state; // Keep at least one
+            return { enabledMethods: current.filter((m) => m !== methodId) };
           }
         }),
 
