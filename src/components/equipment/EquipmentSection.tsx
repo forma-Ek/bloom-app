@@ -33,7 +33,6 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
     setGrinder,
     enabledMethods,
     toggleMethod,
-    setMethodEnabled,
     selectedMethodId,
     setSelectedMethod,
   } = useCoffeeStore();
@@ -50,7 +49,9 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 
   // Test slider value in dial simulator
   const [testSliderValue, setTestSliderValue] = useState<number>(
-    grinder.minScale + Math.round(((grinder.maxScale - grinder.minScale) * 0.5) / grinder.stepSize) * grinder.stepSize
+    grinder.minScale +
+      Math.round(((grinder.maxScale - grinder.minScale) * 0.5) / grinder.stepSize) *
+      grinder.stepSize
   );
 
   const handleSelectModel = (selectedModel: GrinderConfig) => {
@@ -58,7 +59,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
     setTestSliderValue(
       selectedModel.minScale +
         Math.round(((selectedModel.maxScale - selectedModel.minScale) * 0.5) / selectedModel.stepSize) *
-          selectedModel.stepSize
+        selectedModel.stepSize
     );
   };
 
@@ -81,7 +82,6 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
           {POPULAR_GRINDERS.map((model) => {
             const isSelected = grinder.id === model.id || grinder.name === model.name;
             const isTimemoreS3 = model.id === 'grinder-timemore-s3';
-
             return (
               <div
                 key={model.id}
@@ -103,16 +103,13 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                       </span>
                     )}
                   </div>
-
                   <h3 className="text-lg font-bold font-serif text-stone-900 dark:text-stone-100 mt-1">
                     {model.name}
                   </h3>
-
                   <p className="text-xs text-stone-500 dark:text-stone-400 mt-1.5 leading-relaxed">
                     {model.description}
                   </p>
                 </div>
-
                 <div className="mt-4 pt-3 border-t border-stone-200/60 dark:border-stone-800 flex items-center justify-between text-xs">
                   <span className="font-mono text-stone-600 dark:text-stone-400">
                     Escala: <strong>{model.minScale} - {model.maxScale}</strong> (paso {model.stepSize})
@@ -126,7 +123,6 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
               </div>
             );
           })}
-
           {/* Custom scale option card */}
           <div
             onClick={onOpenGrinderModal}
@@ -135,12 +131,8 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
             <div className="w-10 h-10 rounded-xl bg-stone-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
               <Settings className="w-5 h-5 text-copper-500" />
             </div>
-            <h4 className="text-sm font-bold text-stone-800 dark:text-stone-200">
-              Personalizar Molinillo
-            </h4>
-            <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
-              Configura tus propios rangos de dial, clicks y pasos.
-            </p>
+            <h4 className="text-sm font-bold text-stone-800 dark:text-stone-200">Personalizar Molinillo</h4>
+            <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">Configura tus propios rangos de dial, clicks y pasos.</p>
           </div>
         </div>
 
@@ -152,14 +144,9 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                 <Sparkles className="w-3.5 h-3.5" />
                 Molinillo Activo para Recetas
               </div>
-              <h3 className="text-2xl font-black font-serif text-copper-200 mt-1">
-                {grinder.name}
-              </h3>
-              <p className="text-xs text-stone-400 mt-0.5">
-                {grinder.description || 'Escala configurada.'}
-              </p>
+              <h3 className="text-2xl font-black font-serif text-copper-200 mt-1">{grinder.name}</h3>
+              <p className="text-xs text-stone-400 mt-0.5">{grinder.description || 'Escala configurada.'}</p>
             </div>
-
             <div className="flex items-center gap-2 bg-stone-950/70 p-3 rounded-2xl border border-stone-800 text-center font-mono text-xs">
               <div className="px-2">
                 <div className="text-[10px] text-stone-500 uppercase">Mín - Máx</div>
@@ -171,7 +158,6 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
               </div>
             </div>
           </div>
-
           {/* Interactive Dial Simulator Slider */}
           <div className="p-4 rounded-2xl bg-stone-950/80 border border-stone-800/80 space-y-2">
             <div className="flex items-center justify-between text-xs">
@@ -187,7 +173,6 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                   : `Paso ${testSliderValue}`}
               </span>
             </div>
-
             <input
               type="range"
               min={grinder.minScale}
@@ -197,7 +182,6 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
               onChange={(e) => setTestSliderValue(Number(e.target.value))}
               className="w-full accent-copper-500 cursor-pointer h-2 bg-stone-800 rounded-lg"
             />
-
             <div className="flex justify-between text-[11px] text-stone-500 font-mono">
               <span>{grinder.minScale} (Fino / Espresso)</span>
               <span>{((grinder.maxScale + grinder.minScale) / 2).toFixed(1)} (Medio / Filtro)</span>
@@ -207,7 +191,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
         </div>
       </section>
 
-      {/* 2. Methods of Preparation Section (Cards) */
+      {/* 2. Methods of Preparation Section (Cards) */}
       <section className="space-y-6 pt-6 border-t border-stone-200 dark:border-stone-800">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -233,27 +217,17 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
             return (
               <div
                 key={methodId}
-                onClick={() => {
-                  setSelectedMethod(methodId);
-                }}
-                className={`cursor-pointer rounded-2xl border-2 transition-all p-5 flex flex-col justify-between
-                  bg-white dark:bg-stone-900 border-copper-500/80 dark:border-copper-500 shadow-sm
-                  ${isSelected ? 'ring-2 ring-copper-500' : ''}`}
+                onClick={() => setSelectedMethod(methodId)}
+                className={`cursor-pointer rounded-2xl border-2 transition-all p-5 flex flex-col justify-between bg-white dark:bg-stone-900 border-copper-500/80 dark:border-copper-500 shadow-sm ${isSelected ? 'ring-2 ring-copper-500' : ''}`}
               >
                 <div>
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-copper-600 dark:text-copper-400">
-                        Ratio 1:{method.defaultRatio}
-                      </span>
-                      <h3 className="text-lg font-bold font-serif text-stone-900 dark:text-stone-100 mt-0.5">
-                        {method.name}
-                      </h3>
+                      <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-copper-600 dark:text-copper-400">Ratio 1:{method.defaultRatio}</span>
+                      <h3 className="text-lg font-bold font-serif text-stone-900 dark:text-stone-100 mt-0.5">{method.name}</h3>
                     </div>
                   </div>
-                  <p className="text-xs text-stone-600 dark:text-stone-400 mt-2 leading-relaxed">
-                    {method.description}
-                  </p>
+                  <p className="text-xs text-stone-600 dark:text-stone-400 mt-2 leading-relaxed">{method.description}</p>
                   <div className="mt-4 grid grid-cols-3 gap-2 pt-3 border-t border-stone-100 dark:border-stone-800 text-[11px]">
                     <div className="flex items-center gap-1 text-stone-600 dark:text-stone-400">
                       <Thermometer className="w-3.5 h-3.5 text-copper-500 shrink-0" />
@@ -271,9 +245,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                 </div>
                 <div className="mt-4 pt-3 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
                   <span className="text-[11px] text-stone-400 truncate">{method.filterType}</span>
-                  <span className={`text-[11px] font-semibold ${isSelected ? 'text-copper-600 dark:text-copper-400' : 'text-stone-400 hover:text-stone-600'}`}>
-                    {isSelected ? '★ Activo en receta' : 'Clic para usar'}
-                  </span>
+                  <span className={`text-[11px] font-semibold ${isSelected ? 'text-copper-600 dark:text-copper-400' : 'text-stone-400 hover:text-stone-600'}`}>{isSelected ? '★ Activo en receta' : 'Clic para usar'}</span>
                 </div>
               </div>
             );
@@ -300,24 +272,16 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                       toggleMethod(methodId);
                       setSelectedMethod(methodId);
                     }}
-                    className={`cursor-pointer rounded-2xl border-2 transition-all p-5 flex flex-col justify-between
-                      bg-stone-100/50 dark:bg-stone-950/40 border-stone-200 dark:border-stone-800/80 opacity-70 hover:opacity-100
-                      ${isSelected ? 'ring-2 ring-copper-500' : ''}`}
+                    className={`cursor-pointer rounded-2xl border-2 transition-all p-5 flex flex-col justify-between bg-stone-100/50 dark:bg-stone-950/40 border-stone-200 dark:border-stone-800/80 opacity-70 hover:opacity-100 ${isSelected ? 'ring-2 ring-copper-500' : ''}`}
                   >
                     <div>
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-stone-600 dark:text-stone-400">
-                            Ratio 1:{method.defaultRatio}
-                          </span>
-                          <h3 className="text-lg font-bold font-serif text-stone-900 dark:text-stone-100 mt-0.5">
-                            {method.name}
-                          </h3>
+                          <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-stone-600 dark:text-stone-400">Ratio 1:{method.defaultRatio}</span>
+                          <h3 className="text-lg font-bold font-serif text-stone-900 dark:text-stone-100 mt-0.5">{method.name}</h3>
                         </div>
                       </div>
-                      <p className="text-xs text-stone-600 dark:text-stone-400 mt-2 leading-relaxed">
-                        {method.description}
-                      </p>
+                      <p className="text-xs text-stone-600 dark:text-stone-400 mt-2 leading-relaxed">{method.description}</p>
                       <div className="mt-4 grid grid-cols-3 gap-2 pt-3 border-t border-stone-100 dark:border-stone-800 text-[11px]">
                         <div className="flex items-center gap-1 text-stone-600 dark:text-stone-400">
                           <Thermometer className="w-3.5 h-3.5 text-stone-500 shrink-0" />
