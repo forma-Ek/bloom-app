@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 38, 28, 20;
+  --background-rgb: 250, 247, 242;
+}
+
+.dark {
+  --foreground-rgb: 245, 237, 228;
+  --background-rgb: 13, 11, 9;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background-color: rgb(var(--background-rgb));
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  transition: background-color 0.25s ease, color 0.25s ease;
+  min-height: 100vh;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(184, 135, 94, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(184, 135, 94, 0.45);
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Subtle glow for timer */
+.bloom-glow {
+  box-shadow: 0 0 50px -10px rgba(245, 158, 11, 0.2);
+}
+
+.dark .bloom-glow {
+  box-shadow: 0 0 60px -10px rgba(217, 119, 6, 0.25);
+}
