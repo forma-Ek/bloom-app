@@ -126,16 +126,16 @@ Devuelve EXCLUSIVAMENTE un objeto JSON válido con este formato exacto (sin mark
       },
     ];
 
-    const randomProfile = mockProfiles[Math.floor(Math.random() * mockProfiles.length)];
-
-    return NextResponse.json({
-      success: true,
-      data: randomProfile,
-      source: apiKey ? 'gemini-fallback' : 'smart-demo-scanner',
-      notice: !apiKey
-        ? 'Escaneo completado en modo demostración. Puedes ingresar tu Gemini API Key en Ajustes para análisis de fotos en vivo.'
-        : undefined,
-    });
+      // No API key provided or Gemini call failed – return error for manual entry
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            'Gemini API key not provided or image could not be processed. Please enter the coffee data manually.',
+          notice: 'Agrega tu API key en Ajustes para habilitar el escaneo de fotos en vivo.',
+        },
+        { status: 400 }
+      );
   } catch (error) {
     console.error('Scan bag API error:', error);
     return NextResponse.json(
