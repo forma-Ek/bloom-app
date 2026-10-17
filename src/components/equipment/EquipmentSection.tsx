@@ -207,7 +207,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
         </div>
       </section>
 
-      {/* 2. Methods of Preparation Section (Checkboxes / Switches) */}
+      {/* 2. Methods of Preparation Section (Cards) */
       <section className="space-y-6 pt-6 border-t border-stone-200 dark:border-stone-800">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -216,35 +216,31 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
               Tus Métodos de Extracción
             </h2>
             <p className="text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-xl">
-              Marca las casillas de los métodos que tienes en casa. Los métodos seleccionados se destacarán como tu bloque principal en la pestaña <strong>Preparar Receta</strong>.
+              Métodos que tienes en casa. Se muestran en el bloque principal de la pestaña <strong>Preparar Receta</strong>.
             </p>
           </div>
-
           <div className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-copper-500/10 text-copper-700 dark:text-copper-400 border border-copper-500/20 self-start sm:self-auto">
             {enabledMethods.length} de {allMethods.length} métodos activos
           </div>
         </div>
 
-        {/* Checkbox Cards Grid */}
+        {/* Main block: enabled methods */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {allMethods.map((methodId) => {
+          {enabledMethods.map((methodId) => {
             const method = BREW_METHODS[methodId];
-            const isEnabled = enabledMethods.includes(methodId);
-            const isSelected = selectedMethodId === methodId;
             const grind = calculateGrindSetting(method.relativeGrindNormalized, grinder);
-
+            const isSelected = selectedMethodId === methodId;
             return (
               <div
                 key={methodId}
-                onClick={() => toggleMethod(methodId)}
-                className={`cursor-pointer rounded-2xl border-2 transition-all p-5 flex flex-col justify-between ${
-                  isEnabled
-                    ? 'bg-white dark:bg-stone-900 border-copper-500/80 dark:border-copper-500 shadow-sm'
-                    : 'bg-stone-100/50 dark:bg-stone-950/40 border-stone-200 dark:border-stone-800/80 opacity-70 hover:opacity-100'
-                }`}
+                onClick={() => {
+                  setSelectedMethod(methodId);
+                }}
+                className={`cursor-pointer rounded-2xl border-2 transition-all p-5 flex flex-col justify-between
+                  bg-white dark:bg-stone-900 border-copper-500/80 dark:border-copper-500 shadow-sm
+                  ${isSelected ? 'ring-2 ring-copper-500' : ''}`}
               >
                 <div>
-                  {/* Top Checkbox & Name Header */}
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-copper-600 dark:text-copper-400">
@@ -254,39 +250,10 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                         {method.name}
                       </h3>
                     </div>
-
-                    {/* Interactive Checkbox Control */}
-                    <div className="flex items-center gap-1.5">
-                      <span
-                        className={`text-xs font-semibold px-2 py-0.5 rounded-lg transition-colors ${
-                          isEnabled
-                            ? 'bg-copper-500/20 text-copper-700 dark:text-copper-300'
-                            : 'bg-stone-200 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
-                        }`}
-                      >
-                        {isEnabled ? 'Tengo este equipo' : 'No lo tengo'}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleMethod(methodId);
-                        }}
-                        className="text-copper-500 hover:text-copper-400 transition-colors"
-                      >
-                        {isEnabled ? (
-                          <CheckSquare className="w-6 h-6 text-copper-500 fill-copper-500/20" />
-                        ) : (
-                          <Square className="w-6 h-6 text-stone-400" />
-                        )}
-                      </button>
-                    </div>
                   </div>
-
                   <p className="text-xs text-stone-600 dark:text-stone-400 mt-2 leading-relaxed">
                     {method.description}
                   </p>
-
                   <div className="mt-4 grid grid-cols-3 gap-2 pt-3 border-t border-stone-100 dark:border-stone-800 text-[11px]">
                     <div className="flex items-center gap-1 text-stone-600 dark:text-stone-400">
                       <Thermometer className="w-3.5 h-3.5 text-copper-500 shrink-0" />
@@ -302,24 +269,74 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                     </div>
                   </div>
                 </div>
-
                 <div className="mt-4 pt-3 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
-                  <span className="text-[11px] text-stone-400 truncate">
-                    {method.filterType}
-                  </span>
-                  <span
-                    className={`text-[11px] font-semibold ${
-                      isSelected
-                        ? 'text-copper-600 dark:text-copper-400'
-                        : 'text-stone-400 hover:text-stone-600'
-                    }`}
-                  >
-                    {isSelected ? '★ Activo en receta' : 'Clic para activar/desactivar'}
+                  <span className="text-[11px] text-stone-400 truncate">{method.filterType}</span>
+                  <span className={`text-[11px] font-semibold ${isSelected ? 'text-copper-600 dark:text-copper-400' : 'text-stone-400 hover:text-stone-600'}`}>
+                    {isSelected ? '★ Activo en receta' : 'Clic para usar'}
                   </span>
                 </div>
               </div>
             );
           })}
+        </div>
+
+        {/* Secondary block: other methods */}
+        <div className="mt-8">
+          <h3 className="text-xl font-semibold text-stone-900 dark:text-stone-100 mb-4 flex items-center gap-2">
+            <Layers className="w-5 h-5 text-stone-500" />
+            Otros Métodos / Explorar
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {allMethods
+              .filter((id) => !enabledMethods.includes(id))
+              .map((methodId) => {
+                const method = BREW_METHODS[methodId];
+                const grind = calculateGrindSetting(method.relativeGrindNormalized, grinder);
+                const isSelected = selectedMethodId === methodId;
+                return (
+                  <div
+                    key={methodId}
+                    onClick={() => {
+                      toggleMethod(methodId);
+                      setSelectedMethod(methodId);
+                    }}
+                    className={`cursor-pointer rounded-2xl border-2 transition-all p-5 flex flex-col justify-between
+                      bg-stone-100/50 dark:bg-stone-950/40 border-stone-200 dark:border-stone-800/80 opacity-70 hover:opacity-100
+                      ${isSelected ? 'ring-2 ring-copper-500' : ''}`}
+                  >
+                    <div>
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-stone-600 dark:text-stone-400">
+                            Ratio 1:{method.defaultRatio}
+                          </span>
+                          <h3 className="text-lg font-bold font-serif text-stone-900 dark:text-stone-100 mt-0.5">
+                            {method.name}
+                          </h3>
+                        </div>
+                      </div>
+                      <p className="text-xs text-stone-600 dark:text-stone-400 mt-2 leading-relaxed">
+                        {method.description}
+                      </p>
+                      <div className="mt-4 grid grid-cols-3 gap-2 pt-3 border-t border-stone-100 dark:border-stone-800 text-[11px]">
+                        <div className="flex items-center gap-1 text-stone-600 dark:text-stone-400">
+                          <Thermometer className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                          <span>{method.waterTempRange[0]}-{method.waterTempRange[1]}°C</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-stone-600 dark:text-stone-400">
+                          <Clock className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                          <span>{Math.round(method.typicalTimeSeconds / 60)} min</span>
+                        </div>
+                        <div className="flex items-center gap-1 font-mono font-bold text-stone-600 dark:text-stone-400">
+                          <Filter className="w-3.5 h-3.5 shrink-0" />
+                          <span className="truncate">{grind.formatted}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
         </div>
       </section>
     </div>
