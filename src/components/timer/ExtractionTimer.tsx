@@ -20,6 +20,7 @@ import {
   Droplets,
   Flame,
 } from 'lucide-react';
+import { BloomLogo } from '@/components/common/BloomLogo';
 import confetti from 'canvas-confetti';
 
 interface ExtractionTimerProps {
@@ -157,9 +158,7 @@ export const ExtractionTimer: React.FC<ExtractionTimerProps> = ({
       {/* Top Bar */}
       <header className="p-4 sm:p-6 flex items-center justify-between border-b border-stone-800/80 bg-stone-950/60 backdrop-blur-md">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
-            <Droplets className="w-5 h-5 animate-pulse" />
-          </div>
+          <BloomLogo size="md" variant="emblem" />
           <div>
             <h2 className="font-serif font-bold text-base sm:text-lg text-amber-200">
               {recipe.coffeeName}

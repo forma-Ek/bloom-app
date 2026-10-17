@@ -18,7 +18,8 @@ export const metadata: Metadata = {
   description:
     'Generador de recetas inteligentes para café de especialidad con calibración exacta de molinillo, temporizador paso a paso con Web Audio API y visión Gemini 1.5 Flash.',
   icons: {
-    icon: '/favicon.ico',
+    icon: '/favicon.png',
+    apple: '/bloom-logo.png',
   },
 };
 

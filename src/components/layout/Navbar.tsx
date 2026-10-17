@@ -5,6 +5,7 @@ import { useCoffeeStore } from '@/store/coffeeStore';
 import { soundManager } from '@/utils/audio';
 import { ThemeToggle } from './ThemeToggle';
 import { ApiKeyModal } from '@/components/common/ApiKeyModal';
+import { BloomLogo } from '@/components/common/BloomLogo';
 import {
   Coffee,
   Sliders,
@@ -48,20 +49,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => setActiveTab('coffees')}
             className="flex items-center gap-3 cursor-pointer group"
           >
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-white shadow-md shadow-amber-900/20 group-hover:scale-105 transition-transform">
-              <Coffee className="w-5 h-5" />
-            </div>
+            <BloomLogo size="md" variant="emblem" className="group-hover:scale-105 transition-transform" />
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-serif font-black tracking-wider text-xl bg-gradient-to-r from-amber-600 via-amber-700 to-amber-900 dark:from-amber-200 dark:via-amber-400 dark:to-amber-500 bg-clip-text text-transparent">
                   BLOOM
                 </span>
                 <span className="text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                  Specialty Lab
+                  Specialty Coffee
                 </span>
               </div>
               <p className="text-[10px] text-stone-500 dark:text-stone-400 tracking-tight hidden sm:block">
-                Café de Especialidad & Recetas Inteligentes
+                Precision Extraction & Dial-In Lab
               </p>
             </div>
           </div>

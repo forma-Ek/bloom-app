@@ -11,6 +11,7 @@ import { GrinderConfigModal } from '@/components/equipment/GrinderConfigModal';
 import { ExtractionTimer } from '@/components/timer/ExtractionTimer';
 import { DialInFeedbackModal } from '@/components/feedback/DialInFeedbackModal';
 import { generateRecipe } from '@/utils/recipeCalculator';
+import { BloomLogo } from '@/components/common/BloomLogo';
 import { History, ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function HomePage() {
@@ -107,7 +108,8 @@ export default function HomePage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-stone-200 dark:border-stone-800/80 py-6 text-center text-xs text-stone-500 dark:text-stone-500">
+      <footer className="border-t border-stone-200 dark:border-stone-800/80 py-8 text-center text-xs text-stone-500 dark:text-stone-500 flex flex-col items-center justify-center gap-3">
+        <BloomLogo size="sm" variant="full" className="opacity-80 hover:opacity-100 transition-opacity" />
         <p>
           BLOOM • Laboratorio de Café de Especialidad • Precisión de Molienda & Visión Artificial Gemini
         </p>
