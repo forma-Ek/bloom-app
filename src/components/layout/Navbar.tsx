@@ -12,7 +12,6 @@ import {
   Volume2,
   VolumeX,
   Sparkles,
-  Settings,
   Disc,
 } from 'lucide-react';
 
@@ -42,38 +41,38 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-stone-200/80 dark:border-stone-800/80 bg-stone-50/90 dark:bg-stone-950/90 backdrop-blur-md transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-          {/* Logo & Brand */}
+      <header className="sticky top-0 z-40 w-full border-b border-stone-200/80 dark:border-[#2D2D34] bg-stone-50/95 dark:bg-[#121214]/95 backdrop-blur-md transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-22 flex items-center justify-between gap-4">
+          {/* Logo & Brand (Larger and highlighted with copper tones) */}
           <div
             onClick={() => setActiveTab('coffees')}
-            className="flex items-center gap-3 cursor-pointer group"
+            className="flex items-center gap-3.5 cursor-pointer group"
           >
-            <BloomLogo size="md" variant="emblem" className="group-hover:scale-105 transition-transform" />
+            <BloomLogo size="header" variant="emblem" />
             <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-serif font-black tracking-wider text-xl bg-gradient-to-r from-amber-600 via-amber-700 to-amber-900 dark:from-amber-200 dark:via-amber-400 dark:to-amber-500 bg-clip-text text-transparent">
+              <div className="flex items-center gap-2">
+                <span className="font-serif font-black tracking-widest text-2xl sm:text-3xl text-stone-900 dark:text-[#C88A6E] transition-colors">
                   BLOOM
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-[#C88A6E]/15 text-[#C88A6E] dark:text-[#E2B49A] border border-[#C88A6E]/30">
                   Specialty Coffee
                 </span>
               </div>
-              <p className="text-[10px] text-stone-500 dark:text-stone-400 tracking-tight hidden sm:block">
+              <p className="text-[11px] text-stone-500 dark:text-[#A1A1AA] tracking-wider uppercase font-medium hidden sm:block">
                 Precision Extraction & Dial-In Lab
               </p>
             </div>
           </div>
 
           {/* Main 3 Navigation Tabs (Desktop) */}
-          <nav className="hidden md:flex items-center gap-1.5 bg-stone-200/60 dark:bg-stone-900/70 p-1.5 rounded-2xl border border-stone-200 dark:border-stone-800">
+          <nav className="hidden md:flex items-center gap-1.5 bg-stone-200/70 dark:bg-[#1E1E22] p-1.5 rounded-2xl border border-stone-300/80 dark:border-[#2D2D34]">
             {/* Tab 1: Mis Cafés */}
             <button
               onClick={() => setActiveTab('coffees')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                 activeTab === 'coffees'
-                  ? 'bg-amber-600 text-white shadow-md shadow-amber-900/30'
-                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60'
+                  ? 'bg-[#C88A6E] hover:bg-[#B87556] text-white shadow-lg shadow-[#C88A6E]/25'
+                  : 'text-stone-600 dark:text-[#A1A1AA] hover:text-stone-900 dark:hover:text-[#F5F5F7] hover:bg-stone-300/40 dark:hover:bg-[#25252A]'
               }`}
             >
               <Coffee className="w-4 h-4" />
@@ -83,10 +82,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Tab 2: Preparar Receta */}
             <button
               onClick={() => setActiveTab('recipe')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                 activeTab === 'recipe'
-                  ? 'bg-amber-600 text-white shadow-md shadow-amber-900/30'
-                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60'
+                  ? 'bg-[#C88A6E] hover:bg-[#B87556] text-white shadow-lg shadow-[#C88A6E]/25'
+                  : 'text-stone-600 dark:text-[#A1A1AA] hover:text-stone-900 dark:hover:text-[#F5F5F7] hover:bg-stone-300/40 dark:hover:bg-[#25252A]'
               }`}
             >
               <Sliders className="w-4 h-4" />
@@ -96,10 +95,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Tab 3: Mi Equipo */}
             <button
               onClick={() => setActiveTab('equipment')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                 activeTab === 'equipment'
-                  ? 'bg-amber-600 text-white shadow-md shadow-amber-900/30'
-                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800/60'
+                  ? 'bg-[#C88A6E] hover:bg-[#B87556] text-white shadow-lg shadow-[#C88A6E]/25'
+                  : 'text-stone-600 dark:text-[#A1A1AA] hover:text-stone-900 dark:hover:text-[#F5F5F7] hover:bg-stone-300/40 dark:hover:bg-[#25252A]'
               }`}
             >
               <Disc className="w-4 h-4" />
@@ -108,12 +107,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Right Controls */}
-          <div className="flex items-center gap-2">
-            {/* Active Grinder Badge button */}
+          <div className="flex items-center gap-2.5">
+            {/* Active Grinder Badge button with copper rose-gold styling */}
             <button
               onClick={() => setActiveTab('equipment')}
               title={`Molinillo activo: ${grinder.name}. Haz clic para cambiar.`}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-700 dark:text-amber-400 text-xs font-semibold transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-2xl bg-[#C88A6E]/10 hover:bg-[#C88A6E]/20 border border-[#C88A6E]/30 text-[#C88A6E] dark:text-[#E2B49A] text-xs font-bold transition-colors shadow-sm"
             >
               <Disc className="w-3.5 h-3.5" />
               <span className="hidden sm:inline font-mono text-[11px] max-w-[120px] truncate">
@@ -125,11 +124,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={() => setApiKeyModalOpen(true)}
               title="Configuración de IA Gemini (Escaneo de bolsas)"
-              className="p-2 rounded-xl bg-stone-100 dark:bg-stone-900 hover:bg-stone-200 dark:hover:bg-stone-800 border border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 transition-colors"
+              className="p-2.5 rounded-2xl bg-stone-100 dark:bg-[#1E1E22] hover:bg-stone-200 dark:hover:bg-[#25252A] border border-stone-200 dark:border-[#2D2D34] text-stone-600 dark:text-[#A1A1AA] transition-colors"
             >
               <Sparkles
                 className={`w-4 h-4 ${
-                  geminiApiKey ? 'text-amber-500 animate-pulse' : 'text-stone-400'
+                  geminiApiKey ? 'text-[#C88A6E] animate-pulse' : 'text-stone-400'
                 }`}
               />
             </button>
@@ -138,10 +137,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={handleSoundToggle}
               title={soundEnabled ? 'Silenciar sonidos' : 'Activar sonido en temporizador'}
-              className="p-2 rounded-xl bg-stone-100 dark:bg-stone-900 hover:bg-stone-200 dark:hover:bg-stone-800 border border-stone-200 dark:border-stone-800 text-stone-600 dark:text-stone-400 transition-colors"
+              className="p-2.5 rounded-2xl bg-stone-100 dark:bg-[#1E1E22] hover:bg-stone-200 dark:hover:bg-[#25252A] border border-stone-200 dark:border-[#2D2D34] text-stone-600 dark:text-[#A1A1AA] transition-colors"
             >
               {soundEnabled ? (
-                <Volume2 className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <Volume2 className="w-4 h-4 text-[#C88A6E] dark:text-[#E2B49A]" />
               ) : (
                 <VolumeX className="w-4 h-4 text-stone-400" />
               )}
@@ -153,13 +152,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Mobile Submenu (3 Tabs) */}
-        <div className="grid grid-cols-3 border-t border-stone-200 dark:border-stone-800/80 px-2 py-1.5 bg-stone-100/90 dark:bg-stone-900/90 md:hidden">
+        <div className="grid grid-cols-3 border-t border-stone-200 dark:border-[#2D2D34] px-2 py-2 bg-stone-100/90 dark:bg-[#1E1E22]/90 md:hidden">
           <button
             onClick={() => setActiveTab('coffees')}
             className={`flex flex-col items-center gap-1 text-[11px] py-1.5 rounded-xl font-bold transition-all ${
               activeTab === 'coffees'
-                ? 'text-amber-600 dark:text-amber-400 bg-amber-500/10'
-                : 'text-stone-500 dark:text-stone-400'
+                ? 'text-white bg-[#C88A6E] shadow-sm'
+                : 'text-stone-500 dark:text-[#A1A1AA]'
             }`}
           >
             <Coffee className="w-4 h-4" />
@@ -169,23 +168,23 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => setActiveTab('recipe')}
             className={`flex flex-col items-center gap-1 text-[11px] py-1.5 rounded-xl font-bold transition-all ${
               activeTab === 'recipe'
-                ? 'text-amber-600 dark:text-amber-400 bg-amber-500/10'
-                : 'text-stone-500 dark:text-stone-400'
+                ? 'text-white bg-[#C88A6E] shadow-sm'
+                : 'text-stone-500 dark:text-[#A1A1AA]'
             }`}
           >
             <Sliders className="w-4 h-4" />
-            Preparar Receta
+            Preparar
           </button>
           <button
             onClick={() => setActiveTab('equipment')}
             className={`flex flex-col items-center gap-1 text-[11px] py-1.5 rounded-xl font-bold transition-all ${
               activeTab === 'equipment'
-                ? 'text-amber-600 dark:text-amber-400 bg-amber-500/10'
-                : 'text-stone-500 dark:text-stone-400'
+                ? 'text-white bg-[#C88A6E] shadow-sm'
+                : 'text-stone-500 dark:text-[#A1A1AA]'
             }`}
           >
             <Disc className="w-4 h-4" />
-            Mi Equipo
+            Equipo
           </button>
         </div>
       </header>

@@ -30,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`dark ${inter.variable} ${fraunces.variable}`}>
-      <body className="font-sans antialiased bg-stone-50 dark:bg-[#0d0b09] text-stone-900 dark:text-stone-100 selection:bg-amber-500 selection:text-stone-950">
+      <body className="font-sans antialiased bg-[#FAF7F4] dark:bg-[#121214] text-stone-900 dark:text-[#F5F5F7] selection:bg-[#C88A6E] selection:text-white">
         {children}
       </body>
     </html>

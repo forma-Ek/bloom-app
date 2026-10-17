@@ -79,7 +79,7 @@ export const BrewHistorySection: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-200 dark:border-stone-800">
         <div>
           <h2 className="text-2xl font-bold font-serif text-stone-900 dark:text-stone-100 flex items-center gap-2.5">
-            <History className="w-6 h-6 text-amber-500" />
+            <History className="w-6 h-6 text-copper-500" />
             Historial de Extracciones & Dial-In
           </h2>
           <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
@@ -107,7 +107,7 @@ export const BrewHistorySection: React.FC = () => {
             return (
               <div
                 key={record.id}
-                className="p-5 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm space-y-3 transition-all hover:border-amber-500/40"
+                className="p-5 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm space-y-3 transition-all hover:border-copper-500/40"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
@@ -128,19 +128,19 @@ export const BrewHistorySection: React.FC = () => {
                 {/* Parameters row */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-2 border-y border-stone-100 dark:border-stone-800/80 text-xs">
                   <div className="flex items-center gap-1.5 text-stone-600 dark:text-stone-400">
-                    <Scale className="w-4 h-4 text-amber-500 shrink-0" />
+                    <Scale className="w-4 h-4 text-copper-500 shrink-0" />
                     <span>
                       {record.doseGrams}g café ➔ <strong>{record.waterGrams}g</strong> agua
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5 text-stone-600 dark:text-stone-400">
-                    <Sliders className="w-4 h-4 text-amber-500 shrink-0" />
+                    <Sliders className="w-4 h-4 text-copper-500 shrink-0" />
                     <span>
-                      Molienda: <strong className="text-amber-600 dark:text-amber-400">{record.grindSettingFormatted}</strong>
+                      Molienda: <strong className="text-copper-600 dark:text-copper-400">{record.grindSettingFormatted}</strong>
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5 text-stone-600 dark:text-stone-400">
-                    <Clock className="w-4 h-4 text-amber-500 shrink-0" />
+                    <Clock className="w-4 h-4 text-copper-500 shrink-0" />
                     <span>
                       Tiempo: <strong>{Math.floor(record.totalDurationSeconds / 60)}m {record.totalDurationSeconds % 60}s</strong>
                     </span>
@@ -155,8 +155,8 @@ export const BrewHistorySection: React.FC = () => {
 
                 {/* Adjustment Applied or Sensory Notes */}
                 {record.adjustmentApplied && (
-                  <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-800 dark:text-amber-300 flex items-start gap-2">
-                    <TrendingUp className="w-4 h-4 shrink-0 mt-0.5 text-amber-500" />
+                  <div className="p-2.5 rounded-xl bg-copper-500/10 border border-copper-500/20 text-xs text-copper-800 dark:text-copper-300 flex items-start gap-2">
+                    <TrendingUp className="w-4 h-4 shrink-0 mt-0.5 text-copper-500" />
                     <span>{record.adjustmentApplied}</span>
                   </div>
                 )}

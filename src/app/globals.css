@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 38, 28, 20;
-  --background-rgb: 250, 247, 242;
+  --foreground-rgb: 28, 25, 23;
+  --background-rgb: 250, 247, 244;
 }
 
 .dark {
-  --foreground-rgb: 245, 237, 228;
-  --background-rgb: 13, 11, 9;
+  --foreground-rgb: 245, 245, 247; /* Blanco cálido */
+  --background-rgb: 18, 18, 20;    /* Carbón profundo minimalista (#121214) */
 }
 
 body {
@@ -20,7 +20,7 @@ body {
   min-height: 100vh;
 }
 
-/* Custom Scrollbars */
+/* Custom Scrollbars in Copper Theme */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -29,11 +29,11 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(184, 135, 94, 0.25);
+  background: rgba(200, 138, 110, 0.35); /* #C88A6E cobrizo */
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(184, 135, 94, 0.45);
+  background: rgba(200, 138, 110, 0.65);
 }
 
 /* Glassmorphism utility */
@@ -42,11 +42,11 @@ body {
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* Subtle glow for timer */
+/* Copper Rose-Gold glow for Timer & Active Cards */
 .bloom-glow {
-  box-shadow: 0 0 50px -10px rgba(245, 158, 11, 0.2);
+  box-shadow: 0 0 50px -10px rgba(200, 138, 110, 0.25);
 }
 
 .dark .bloom-glow {
-  box-shadow: 0 0 60px -10px rgba(217, 119, 6, 0.25);
+  box-shadow: 0 0 60px -10px rgba(200, 138, 110, 0.35);
 }

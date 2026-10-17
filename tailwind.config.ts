@@ -10,35 +10,48 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        coffee: {
-          50: "#fbf8f5",
-          100: "#f4ede4",
-          200: "#e9dac9",
-          300: "#dac0a3",
-          400: "#c7a07c",
-          500: "#b8875e",
-          600: "#aa714f",
-          700: "#8e5a40",
-          800: "#734937",
-          900: "#241812",
-          950: "#140c09",
+        // Luxury Specialty Coffee Copper / Rose Gold Palette (Matching BLOOM Logo)
+        copper: {
+          50: "#FAF5F2",
+          100: "#F5EAE4",
+          200: "#EBD4C8",
+          300: "#E2B49A", // Cobre suave / Destacados
+          400: "#D49A7E", // Oro rosa medio
+          500: "#C88A6E", // Color de Acento Principal (Cobrizo / Oro Rosa)
+          600: "#B87556",
+          700: "#9E5E41",
+          800: "#804A32",
+          900: "#5A311F",
+          950: "#32190E",
         },
-        crema: {
-          50: "#fffbeb",
-          100: "#fef3c7",
-          200: "#fde68a",
-          300: "#fcd34d",
-          400: "#fbbf24",
-          500: "#f59e0b",
-          600: "#d97706",
-          700: "#b45309",
+        // Harmonize amber utility classes with the copper rose-gold scale
+        amber: {
+          50: "#FAF5F2",
+          100: "#F5EAE4",
+          200: "#EBD4C8",
+          300: "#E2B49A",
+          400: "#D49A7E",
+          500: "#C88A6E", // Acento principal
+          600: "#B87556", // Botones primarios hover
+          700: "#9E5E41",
+          800: "#804A32",
+          900: "#5A311F",
+          950: "#32190E",
         },
-        roast: {
-          dark: "#0b0908",
-          card: "#17120e",
-          border: "#2d231c",
-          hover: "#251d17",
-        }
+        // Minimalist charcoal and matte black surfaces
+        stone: {
+          50:  "#FAF7F4", // Fondo modo claro suave
+          100: "#F3EDE8",
+          200: "#E5DDD5",
+          300: "#D4C7BC",
+          400: "#A1A1AA", // Gris tenue para legibilidad
+          500: "#71717A",
+          600: "#52525B",
+          700: "#3F3F46",
+          800: "#2A2A30", // Bordes sutiles y divisores
+          900: "#1E1E22", // Tarjetas y componentes (Negro mate)
+          950: "#121214", // Fondo Tema Oscuro (Carbón profundo minimalista)
+        },
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],

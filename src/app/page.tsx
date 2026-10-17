@@ -46,7 +46,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50 dark:bg-[#0c0a09] text-stone-900 dark:text-stone-100 transition-colors flex flex-col">
+    <div className="min-h-screen bg-[#FAF7F4] dark:bg-[#121214] text-stone-900 dark:text-[#F5F5F7] transition-colors flex flex-col selection:bg-[#C88A6E] selection:text-white">
       {/* Top 3-Tab Navbar */}
       <Navbar
         activeTab={activeTab}
@@ -78,10 +78,10 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => setShowHistory(!showHistory)}
-                className="w-full flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 text-xs font-semibold text-stone-600 dark:text-stone-300 hover:border-amber-500/40 transition-colors"
+                className="w-full flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 text-xs font-semibold text-stone-600 dark:text-stone-300 hover:border-copper-500/40 transition-colors"
               >
                 <span className="flex items-center gap-2">
-                  <History className="w-4 h-4 text-amber-500" />
+                  <History className="w-4 h-4 text-copper-500" />
                   Ver Historial de Extracciones y Calibraciones Previas
                 </span>
                 {showHistory ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}

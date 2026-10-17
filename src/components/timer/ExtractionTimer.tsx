@@ -160,7 +160,7 @@ export const ExtractionTimer: React.FC<ExtractionTimerProps> = ({
         <div className="flex items-center gap-3">
           <BloomLogo size="md" variant="emblem" />
           <div>
-            <h2 className="font-serif font-bold text-base sm:text-lg text-amber-200">
+            <h2 className="font-serif font-bold text-base sm:text-lg text-copper-200">
               {recipe.coffeeName}
             </h2>
             <p className="text-xs text-stone-400">
@@ -176,7 +176,7 @@ export const ExtractionTimer: React.FC<ExtractionTimerProps> = ({
             title={isMuted ? 'Activar sonido' : 'Silenciar sonido'}
             className="p-2.5 rounded-xl bg-stone-900 border border-stone-800 hover:bg-stone-800 text-stone-400 hover:text-stone-200 transition-colors"
           >
-            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-amber-400" />}
+            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-copper-400" />}
           </button>
 
           {/* Close button */}
@@ -193,7 +193,7 @@ export const ExtractionTimer: React.FC<ExtractionTimerProps> = ({
       {/* Main Focus Extraction Body */}
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6 flex flex-col justify-center items-center text-center">
         {/* Step Indicator Header */}
-        <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-amber-400/90 mb-3 bg-amber-500/10 px-3.5 py-1.5 rounded-full border border-amber-500/20">
+        <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-copper-400/90 mb-3 bg-copper-500/10 px-3.5 py-1.5 rounded-full border border-copper-500/20">
           <Sparkles className="w-3.5 h-3.5" />
           <span>
             Paso {currentStepIndex + 1} de {recipe.steps.length}: {currentStep.title}
@@ -208,7 +208,7 @@ export const ExtractionTimer: React.FC<ExtractionTimerProps> = ({
           <div className="text-xs font-mono text-stone-500 mt-1 flex items-center justify-center gap-2">
             <span>Tiempo Total Transcurrido</span>
             <span>•</span>
-            <span className="text-amber-400 font-semibold">
+            <span className="text-copper-400 font-semibold">
               Paso actual: {stepSecondsRemaining}s restantes
             </span>
           </div>
@@ -226,7 +226,7 @@ export const ExtractionTimer: React.FC<ExtractionTimerProps> = ({
               <div className="text-[10px] uppercase font-bold text-stone-500 tracking-wider">
                 Verter en este paso
               </div>
-              <div className="text-2xl font-mono font-black text-amber-400 mt-0.5">
+              <div className="text-2xl font-mono font-black text-copper-400 mt-0.5">
                 {currentStep.waterDeltaGrams > 0 ? `+${currentStep.waterDeltaGrams}g` : '0g'}
               </div>
             </div>
@@ -253,7 +253,7 @@ export const ExtractionTimer: React.FC<ExtractionTimerProps> = ({
             </div>
             <div className="w-full h-2.5 rounded-full bg-stone-900 overflow-hidden border border-stone-800">
               <div
-                className="h-full bg-amber-500 rounded-full transition-all duration-300"
+                className="h-full bg-copper-500 rounded-full transition-all duration-300"
                 style={{ width: `${stepProgress}%` }}
               />
             </div>
@@ -294,7 +294,7 @@ export const ExtractionTimer: React.FC<ExtractionTimerProps> = ({
           {/* Main Play / Pause Hero Button */}
           <button
             onClick={togglePlay}
-            className="flex-1 py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-bold text-base transition-all shadow-xl shadow-amber-900/40 active:scale-98 flex items-center justify-center gap-2"
+            className="flex-1 py-4 px-6 rounded-2xl bg-gradient-to-r from-copper-500 to-copper-600 hover:from-copper-400 hover:to-copper-500 text-stone-950 font-bold text-base transition-all shadow-xl shadow-copper-900/40 active:scale-98 flex items-center justify-center gap-2"
           >
             {isRunning ? (
               <>
@@ -323,7 +323,7 @@ export const ExtractionTimer: React.FC<ExtractionTimerProps> = ({
           {/* Finish & Feedback Button */}
           <button
             onClick={() => onFinish(totalSecondsElapsed)}
-            className="px-4 py-3.5 rounded-2xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/30 text-amber-300 font-semibold text-xs transition-colors shrink-0"
+            className="px-4 py-3.5 rounded-2xl bg-copper-500/20 hover:bg-copper-500/30 border border-copper-500/30 text-copper-300 font-semibold text-xs transition-colors shrink-0"
           >
             Finalizar & Calibrar
           </button>

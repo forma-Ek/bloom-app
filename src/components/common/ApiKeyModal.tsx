@@ -27,10 +27,10 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-      <div className="w-full max-w-md bg-stone-900 border border-amber-900/40 rounded-2xl p-6 shadow-2xl text-stone-100">
+      <div className="w-full max-w-md bg-stone-900 border border-copper-900/40 rounded-2xl p-6 shadow-2xl text-stone-100">
         <div className="flex items-center justify-between pb-4 border-b border-stone-800">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400">
+            <div className="p-2 rounded-lg bg-copper-500/10 text-copper-400">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
@@ -51,13 +51,13 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
             BLOOM utiliza <strong>gemini-1.5-flash</strong> para leer etiquetas, detectar el origen, varietal, proceso y notas de cata con una sola foto.
           </p>
 
-          <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200/90 leading-relaxed">
+          <div className="p-3 rounded-xl bg-copper-500/10 border border-copper-500/20 text-xs text-copper-200/90 leading-relaxed">
             💡 <strong>Modo Demo incluido:</strong> Si no ingresas una clave, BLOOM incluye un simulador de cata inteligente para que puedas probar la experiencia sin configurar nada.
           </div>
 
           <div>
             <label className="block text-xs font-medium text-stone-300 mb-1.5 flex items-center gap-1.5">
-              <Key className="w-3.5 h-3.5 text-amber-400" />
+              <Key className="w-3.5 h-3.5 text-copper-400" />
               Tu Gemini API Key (Opcional)
             </label>
             <input
@@ -65,7 +65,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
               placeholder="AIzaSy..."
               value={keyValue}
               onChange={(e) => setKeyValue(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-stone-950 border border-stone-700 focus:border-amber-500 focus:outline-none text-stone-100 placeholder:text-stone-600 font-mono text-sm"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-stone-950 border border-stone-700 focus:border-copper-500 focus:outline-none text-stone-100 placeholder:text-stone-600 font-mono text-sm"
             />
           </div>
 
@@ -73,7 +73,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
             href="https://aistudio.google.com/app/apikey"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs text-amber-400 hover:text-amber-300 hover:underline"
+            className="inline-flex items-center gap-1.5 text-xs text-copper-400 hover:text-copper-300 hover:underline"
           >
             Obtener una clave gratis en Google AI Studio
             <ExternalLink className="w-3 h-3" />
@@ -91,7 +91,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
           <button
             type="button"
             onClick={handleSave}
-            className="flex-1 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-sm font-semibold transition-all shadow-lg shadow-amber-900/30 flex items-center justify-center gap-2"
+            className="flex-1 px-4 py-2.5 rounded-xl bg-copper-600 hover:bg-copper-500 text-white text-sm font-semibold transition-all shadow-lg shadow-copper-900/30 flex items-center justify-center gap-2"
           >
             {saved ? (
               <>

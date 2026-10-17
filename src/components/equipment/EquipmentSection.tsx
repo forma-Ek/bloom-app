@@ -68,7 +68,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
       <section className="space-y-6">
         <div>
           <h2 className="text-3xl font-black font-serif text-stone-900 dark:text-stone-100 flex items-center gap-2.5">
-            <Disc className="w-7 h-7 text-amber-500" />
+            <Disc className="w-7 h-7 text-copper-500" />
             Configuración de Molinillo
           </h2>
           <p className="text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-xl">
@@ -88,17 +88,17 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                 onClick={() => handleSelectModel(model)}
                 className={`cursor-pointer text-left p-5 rounded-2xl border-2 transition-all relative flex flex-col justify-between ${
                   isSelected
-                    ? 'bg-amber-500/10 border-amber-500 dark:border-amber-500 shadow-md ring-1 ring-amber-500/50'
-                    : 'bg-white dark:bg-stone-900/80 border-stone-200 dark:border-stone-800 hover:border-amber-500/40'
+                    ? 'bg-copper-500/10 border-copper-500 dark:border-copper-500 shadow-md ring-1 ring-copper-500/50'
+                    : 'bg-white dark:bg-stone-900/80 border-stone-200 dark:border-stone-800 hover:border-copper-500/40'
                 }`}
               >
                 <div>
                   <div className="flex items-start justify-between gap-2">
-                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-copper-600 dark:text-copper-400">
                       {model.scaleType === 'dial' ? 'Dial Numérico' : model.scaleType === 'clicks' ? 'Clicks' : 'Numérico'}
                     </span>
                     {isSelected && (
-                      <span className="w-5 h-5 rounded-full bg-amber-500 text-stone-950 flex items-center justify-center">
+                      <span className="w-5 h-5 rounded-full bg-copper-500 text-stone-950 flex items-center justify-center">
                         <Check className="w-3.5 h-3.5 stroke-[3]" />
                       </span>
                     )}
@@ -118,7 +118,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                     Escala: <strong>{model.minScale} - {model.maxScale}</strong> (paso {model.stepSize})
                   </span>
                   {isTimemoreS3 && (
-                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-500">
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-copper-500/20 text-copper-500">
                       Dial 0-9
                     </span>
                   )}
@@ -130,10 +130,10 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
           {/* Custom scale option card */}
           <div
             onClick={onOpenGrinderModal}
-            className="cursor-pointer text-left p-5 rounded-2xl border-2 border-dashed border-stone-300 dark:border-stone-700 hover:border-amber-500 bg-stone-50/50 dark:bg-stone-950/40 transition-all flex flex-col justify-center items-center text-center group"
+            className="cursor-pointer text-left p-5 rounded-2xl border-2 border-dashed border-stone-300 dark:border-stone-700 hover:border-copper-500 bg-stone-50/50 dark:bg-stone-950/40 transition-all flex flex-col justify-center items-center text-center group"
           >
             <div className="w-10 h-10 rounded-xl bg-stone-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-              <Settings className="w-5 h-5 text-amber-500" />
+              <Settings className="w-5 h-5 text-copper-500" />
             </div>
             <h4 className="text-sm font-bold text-stone-800 dark:text-stone-200">
               Personalizar Molinillo
@@ -145,14 +145,14 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
         </div>
 
         {/* Selected Grinder Live Overview */}
-        <div className="p-6 rounded-3xl bg-gradient-to-br from-stone-900 via-stone-900 to-amber-950/30 border border-amber-500/30 text-stone-100 shadow-xl space-y-5">
+        <div className="p-6 rounded-3xl bg-gradient-to-br from-stone-900 via-stone-900 to-copper-950/30 border border-copper-500/30 text-stone-100 shadow-xl space-y-5">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-copper-400">
                 <Sparkles className="w-3.5 h-3.5" />
                 Molinillo Activo para Recetas
               </div>
-              <h3 className="text-2xl font-black font-serif text-amber-200 mt-1">
+              <h3 className="text-2xl font-black font-serif text-copper-200 mt-1">
                 {grinder.name}
               </h3>
               <p className="text-xs text-stone-400 mt-0.5">
@@ -163,11 +163,11 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
             <div className="flex items-center gap-2 bg-stone-950/70 p-3 rounded-2xl border border-stone-800 text-center font-mono text-xs">
               <div className="px-2">
                 <div className="text-[10px] text-stone-500 uppercase">Mín - Máx</div>
-                <div className="font-bold text-amber-400">{grinder.minScale} - {grinder.maxScale}</div>
+                <div className="font-bold text-copper-400">{grinder.minScale} - {grinder.maxScale}</div>
               </div>
               <div className="px-2 border-l border-stone-800">
                 <div className="text-[10px] text-stone-500 uppercase">Paso</div>
-                <div className="font-bold text-amber-400">{grinder.stepSize}</div>
+                <div className="font-bold text-copper-400">{grinder.stepSize}</div>
               </div>
             </div>
           </div>
@@ -176,10 +176,10 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
           <div className="p-4 rounded-2xl bg-stone-950/80 border border-stone-800/80 space-y-2">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-stone-300 flex items-center gap-1.5">
-                <Sliders className="w-3.5 h-3.5 text-amber-400" />
+                <Sliders className="w-3.5 h-3.5 text-copper-400" />
                 Simulador del dial ({grinder.name}):
               </span>
-              <span className="font-mono text-sm px-2.5 py-0.5 rounded-lg bg-amber-500/20 text-amber-400 font-black">
+              <span className="font-mono text-sm px-2.5 py-0.5 rounded-lg bg-copper-500/20 text-copper-400 font-black">
                 {grinder.scaleType === 'dial'
                   ? `Dial ${testSliderValue}`
                   : grinder.scaleType === 'clicks'
@@ -195,7 +195,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
               step={grinder.stepSize}
               value={testSliderValue}
               onChange={(e) => setTestSliderValue(Number(e.target.value))}
-              className="w-full accent-amber-500 cursor-pointer h-2 bg-stone-800 rounded-lg"
+              className="w-full accent-copper-500 cursor-pointer h-2 bg-stone-800 rounded-lg"
             />
 
             <div className="flex justify-between text-[11px] text-stone-500 font-mono">
@@ -212,7 +212,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 className="text-2xl font-bold font-serif text-stone-900 dark:text-stone-100 flex items-center gap-2.5">
-              <Layers className="w-6 h-6 text-amber-500" />
+              <Layers className="w-6 h-6 text-copper-500" />
               Tus Métodos de Extracción
             </h2>
             <p className="text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-xl">
@@ -220,7 +220,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
             </p>
           </div>
 
-          <div className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 self-start sm:self-auto">
+          <div className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-copper-500/10 text-copper-700 dark:text-copper-400 border border-copper-500/20 self-start sm:self-auto">
             {enabledMethods.length} de {allMethods.length} métodos activos
           </div>
         </div>
@@ -239,7 +239,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                 onClick={() => toggleMethod(methodId)}
                 className={`cursor-pointer rounded-2xl border-2 transition-all p-5 flex flex-col justify-between ${
                   isEnabled
-                    ? 'bg-white dark:bg-stone-900 border-amber-500/80 dark:border-amber-500 shadow-sm'
+                    ? 'bg-white dark:bg-stone-900 border-copper-500/80 dark:border-copper-500 shadow-sm'
                     : 'bg-stone-100/50 dark:bg-stone-950/40 border-stone-200 dark:border-stone-800/80 opacity-70 hover:opacity-100'
                 }`}
               >
@@ -247,7 +247,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                   {/* Top Checkbox & Name Header */}
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-amber-600 dark:text-amber-400">
+                      <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-copper-600 dark:text-copper-400">
                         Ratio 1:{method.defaultRatio}
                       </span>
                       <h3 className="text-lg font-bold font-serif text-stone-900 dark:text-stone-100 mt-0.5">
@@ -260,7 +260,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                       <span
                         className={`text-xs font-semibold px-2 py-0.5 rounded-lg transition-colors ${
                           isEnabled
-                            ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300'
+                            ? 'bg-copper-500/20 text-copper-700 dark:text-copper-300'
                             : 'bg-stone-200 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
                         }`}
                       >
@@ -272,10 +272,10 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                           e.stopPropagation();
                           toggleMethod(methodId);
                         }}
-                        className="text-amber-500 hover:text-amber-400 transition-colors"
+                        className="text-copper-500 hover:text-copper-400 transition-colors"
                       >
                         {isEnabled ? (
-                          <CheckSquare className="w-6 h-6 text-amber-500 fill-amber-500/20" />
+                          <CheckSquare className="w-6 h-6 text-copper-500 fill-copper-500/20" />
                         ) : (
                           <Square className="w-6 h-6 text-stone-400" />
                         )}
@@ -289,14 +289,14 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 
                   <div className="mt-4 grid grid-cols-3 gap-2 pt-3 border-t border-stone-100 dark:border-stone-800 text-[11px]">
                     <div className="flex items-center gap-1 text-stone-600 dark:text-stone-400">
-                      <Thermometer className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                      <Thermometer className="w-3.5 h-3.5 text-copper-500 shrink-0" />
                       <span>{method.waterTempRange[0]}-{method.waterTempRange[1]}°C</span>
                     </div>
                     <div className="flex items-center gap-1 text-stone-600 dark:text-stone-400">
-                      <Clock className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                      <Clock className="w-3.5 h-3.5 text-copper-500 shrink-0" />
                       <span>{Math.round(method.typicalTimeSeconds / 60)} min</span>
                     </div>
-                    <div className="flex items-center gap-1 font-mono font-bold text-amber-600 dark:text-amber-400">
+                    <div className="flex items-center gap-1 font-mono font-bold text-copper-600 dark:text-copper-400">
                       <Filter className="w-3.5 h-3.5 shrink-0" />
                       <span className="truncate">{grind.formatted}</span>
                     </div>
@@ -310,7 +310,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
                   <span
                     className={`text-[11px] font-semibold ${
                       isSelected
-                        ? 'text-amber-600 dark:text-amber-400'
+                        ? 'text-copper-600 dark:text-copper-400'
                         : 'text-stone-400 hover:text-stone-600'
                     }`}
                   >

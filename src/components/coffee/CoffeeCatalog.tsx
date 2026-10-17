@@ -61,7 +61,7 @@ export const CoffeeCatalog: React.FC<CoffeeCatalogProps> = ({
       {/* 1. Header & Brief Intro */}
       <div>
         <h2 className="text-3xl font-black font-serif text-stone-900 dark:text-stone-100 flex items-center gap-2.5">
-          <Coffee className="w-7 h-7 text-amber-500" />
+          <Coffee className="w-7 h-7 text-copper-500" />
           Mis Cafés
         </h2>
         <p className="text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-xl">
@@ -75,20 +75,20 @@ export const CoffeeCatalog: React.FC<CoffeeCatalogProps> = ({
         <button
           type="button"
           onClick={handleOpenScan}
-          className="group relative text-left p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-amber-950/40 via-stone-900 to-stone-950 border-2 border-amber-500/50 hover:border-amber-400 text-stone-100 shadow-xl shadow-amber-950/20 hover:shadow-amber-500/10 transition-all active:scale-[0.99] flex flex-col justify-between"
+          className="group relative text-left p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-copper-950/40 via-stone-900 to-stone-950 border-2 border-copper-500/50 hover:border-copper-400 text-stone-100 shadow-xl shadow-copper-950/20 hover:shadow-copper-500/10 transition-all active:scale-[0.99] flex flex-col justify-between"
         >
           <div>
             <div className="flex items-center justify-between gap-2 mb-3">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 rounded-2xl bg-copper-500/20 text-copper-400 border border-copper-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Camera className="w-6 h-6" />
               </div>
-              <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-amber-400" />
+              <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-copper-500/20 text-copper-300 border border-copper-500/30 flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-copper-400" />
                 IA Gemini 1.5 Flash
               </span>
             </div>
 
-            <h3 className="text-lg font-bold font-serif text-amber-200 group-hover:text-amber-300 transition-colors">
+            <h3 className="text-lg font-bold font-serif text-copper-200 group-hover:text-copper-300 transition-colors">
               Añadir por Foto (IA Gemini)
             </h3>
             <p className="text-xs text-stone-400 mt-1.5 leading-relaxed">
@@ -96,7 +96,7 @@ export const CoffeeCatalog: React.FC<CoffeeCatalogProps> = ({
             </p>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-stone-800/80 text-xs font-semibold text-amber-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+          <div className="mt-4 pt-3 border-t border-stone-800/80 text-xs font-semibold text-copper-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
             <span>Escanear etiqueta con la cámara</span>
             <span>➔</span>
           </div>
@@ -106,7 +106,7 @@ export const CoffeeCatalog: React.FC<CoffeeCatalogProps> = ({
         <button
           type="button"
           onClick={handleOpenManual}
-          className="group relative text-left p-5 sm:p-6 rounded-3xl bg-white dark:bg-stone-900/90 border-2 border-stone-200 dark:border-stone-800 hover:border-amber-500/60 dark:hover:border-stone-700 text-stone-900 dark:text-stone-100 shadow-sm hover:shadow-md transition-all active:scale-[0.99] flex flex-col justify-between"
+          className="group relative text-left p-5 sm:p-6 rounded-3xl bg-white dark:bg-stone-900/90 border-2 border-stone-200 dark:border-stone-800 hover:border-copper-500/60 dark:hover:border-stone-700 text-stone-900 dark:text-stone-100 shadow-sm hover:shadow-md transition-all active:scale-[0.99] flex flex-col justify-between"
         >
           <div>
             <div className="flex items-center justify-between gap-2 mb-3">
@@ -118,7 +118,7 @@ export const CoffeeCatalog: React.FC<CoffeeCatalogProps> = ({
               </span>
             </div>
 
-            <h3 className="text-lg font-bold font-serif text-stone-900 dark:text-stone-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+            <h3 className="text-lg font-bold font-serif text-stone-900 dark:text-stone-100 group-hover:text-copper-600 dark:group-hover:text-copper-400 transition-colors">
               Añadir a Mano
             </h3>
             <p className="text-xs text-stone-500 dark:text-stone-400 mt-1.5 leading-relaxed">
@@ -126,7 +126,7 @@ export const CoffeeCatalog: React.FC<CoffeeCatalogProps> = ({
             </p>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-stone-100 dark:border-stone-800 text-xs font-semibold text-stone-600 dark:text-stone-400 group-hover:text-amber-600 dark:group-hover:text-amber-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+          <div className="mt-4 pt-3 border-t border-stone-100 dark:border-stone-800 text-xs font-semibold text-stone-600 dark:text-stone-400 group-hover:text-copper-600 dark:group-hover:text-copper-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
             <span>Rellenar formulario paso a paso</span>
             <span>➔</span>
           </div>
@@ -143,7 +143,7 @@ export const CoffeeCatalog: React.FC<CoffeeCatalogProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Buscar café por nombre, origen, varietal o notas..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 focus:border-amber-500 focus:outline-none text-stone-900 dark:text-stone-100 text-xs sm:text-sm shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 focus:border-copper-500 focus:outline-none text-stone-900 dark:text-stone-100 text-xs sm:text-sm shadow-sm"
             />
           </div>
 
@@ -162,7 +162,7 @@ export const CoffeeCatalog: React.FC<CoffeeCatalogProps> = ({
                 onClick={() => setFilterProcess(p.id)}
                 className={`text-xs px-3 py-1.5 rounded-xl font-medium whitespace-nowrap transition-all ${
                   filterProcess === p.id
-                    ? 'bg-amber-600 text-white font-semibold shadow-sm'
+                    ? 'bg-copper-600 text-white font-semibold shadow-sm'
                     : 'bg-white dark:bg-stone-900 text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 border border-stone-200 dark:border-stone-800'
                 }`}
               >

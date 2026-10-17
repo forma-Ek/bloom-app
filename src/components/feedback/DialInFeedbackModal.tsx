@@ -50,7 +50,7 @@ export const DialInFeedbackModal: React.FC<DialInFeedbackModalProps> = ({
       icon: '🌟',
       title: 'Perfecto & Balanceado',
       subtitle: 'Dulzor alto, acidez brillante y final limpio sin asperezas.',
-      color: 'hover:border-amber-400 hover:bg-amber-500/10',
+      color: 'hover:border-copper-400 hover:bg-copper-500/10',
     },
     {
       id: 'overextracted',
@@ -125,13 +125,13 @@ export const DialInFeedbackModal: React.FC<DialInFeedbackModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto animate-fade-in">
-      <div className="w-full max-w-xl bg-stone-900 border border-amber-900/40 rounded-3xl p-6 sm:p-7 shadow-2xl text-stone-100 my-8">
+      <div className="w-full max-w-xl bg-stone-900 border border-copper-900/40 rounded-3xl p-6 sm:p-7 shadow-2xl text-stone-100 my-8">
         {!submitted ? (
           <>
             {/* Header */}
             <div className="flex items-start justify-between pb-4 border-b border-stone-800">
               <div>
-                <span className="text-[11px] font-mono uppercase tracking-wider text-amber-400 font-bold">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-copper-400 font-bold">
                   Extracción Completada ({formatDuration(totalDurationSeconds)})
                 </span>
                 <h3 className="font-serif font-black text-2xl text-stone-100 mt-0.5">
@@ -139,7 +139,7 @@ export const DialInFeedbackModal: React.FC<DialInFeedbackModalProps> = ({
                 </h3>
                 <p className="text-xs text-stone-400 mt-1">
                   Tu evaluación calibrará automáticamente la molienda para tu próxima taza de{' '}
-                  <strong className="text-amber-300">{recipe.coffeeName}</strong>.
+                  <strong className="text-copper-300">{recipe.coffeeName}</strong>.
                 </p>
               </div>
 
@@ -162,7 +162,7 @@ export const DialInFeedbackModal: React.FC<DialInFeedbackModalProps> = ({
                     onClick={() => setSelectedFeedback(opt.id)}
                     className={`w-full text-left p-3.5 rounded-2xl border transition-all flex items-start gap-3.5 ${
                       isSelected
-                        ? 'bg-amber-500/20 border-amber-500 text-stone-100 shadow-lg ring-1 ring-amber-500'
+                        ? 'bg-copper-500/20 border-copper-500 text-stone-100 shadow-lg ring-1 ring-copper-500'
                         : `bg-stone-950/60 border-stone-800 text-stone-300 ${opt.color}`
                     }`}
                   >
@@ -172,7 +172,7 @@ export const DialInFeedbackModal: React.FC<DialInFeedbackModalProps> = ({
                       <div className="text-xs text-stone-400 mt-0.5">{opt.subtitle}</div>
                     </div>
                     {isSelected && (
-                      <CheckCircle2 className="w-5 h-5 text-amber-400 shrink-0 mt-1" />
+                      <CheckCircle2 className="w-5 h-5 text-copper-400 shrink-0 mt-1" />
                     )}
                   </button>
                 );
@@ -189,7 +189,7 @@ export const DialInFeedbackModal: React.FC<DialInFeedbackModalProps> = ({
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Ej: Mucha dulzura a melocotón, pero un final ligeramente seco al enfriarse..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-stone-950 border border-stone-800 focus:border-amber-500 focus:outline-none text-stone-200 text-xs placeholder:text-stone-600"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-stone-950 border border-stone-800 focus:border-copper-500 focus:outline-none text-stone-200 text-xs placeholder:text-stone-600"
               />
             </div>
 
@@ -206,7 +206,7 @@ export const DialInFeedbackModal: React.FC<DialInFeedbackModalProps> = ({
                 type="button"
                 disabled={!selectedFeedback}
                 onClick={handleSubmit}
-                className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 disabled:opacity-40 text-stone-950 font-bold text-sm transition-all shadow-lg shadow-amber-900/30 flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-copper-600 to-copper-500 hover:from-copper-500 hover:to-copper-400 disabled:opacity-40 text-stone-950 font-bold text-sm transition-all shadow-lg shadow-copper-900/30 flex items-center justify-center gap-2"
               >
                 <Sliders className="w-4 h-4" />
                 Calibrar Molienda
@@ -216,12 +216,12 @@ export const DialInFeedbackModal: React.FC<DialInFeedbackModalProps> = ({
         ) : (
           /* Auto-Adjustment Result Banner */
           <div className="text-center py-4 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center mx-auto shadow-xl">
+            <div className="w-16 h-16 rounded-full bg-copper-500/20 text-copper-400 border border-copper-500/30 flex items-center justify-center mx-auto shadow-xl">
               <Sparkles className="w-8 h-8" />
             </div>
 
             <div>
-              <h3 className="text-2xl font-serif font-black text-amber-200">
+              <h3 className="text-2xl font-serif font-black text-copper-200">
                 ¡Calibración Actualizada!
               </h3>
               <p className="text-xs text-stone-400 mt-1 max-w-md mx-auto">
@@ -229,8 +229,8 @@ export const DialInFeedbackModal: React.FC<DialInFeedbackModalProps> = ({
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-stone-950 border border-amber-500/30 text-left space-y-2">
-              <div className="text-xs font-mono font-bold uppercase text-amber-400 flex items-center gap-1.5">
+            <div className="p-4 rounded-2xl bg-stone-950 border border-copper-500/30 text-left space-y-2">
+              <div className="text-xs font-mono font-bold uppercase text-copper-400 flex items-center gap-1.5">
                 <TrendingUp className="w-4 h-4" /> Auto-Ajuste Aplicado:
               </div>
               <p className="text-sm text-stone-200 leading-relaxed font-medium">
@@ -240,7 +240,7 @@ export const DialInFeedbackModal: React.FC<DialInFeedbackModalProps> = ({
 
             <button
               onClick={onClose}
-              className="w-full py-3.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm transition-all shadow-lg shadow-amber-900/30"
+              className="w-full py-3.5 rounded-xl bg-copper-600 hover:bg-copper-500 text-white font-bold text-sm transition-all shadow-lg shadow-copper-900/30"
             >
               Listo, volver a las recetas
             </button>

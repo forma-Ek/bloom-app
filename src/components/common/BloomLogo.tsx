@@ -4,52 +4,54 @@ import React from 'react';
 
 interface BloomLogoProps {
   className?: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'header';
   variant?: 'emblem' | 'full';
 }
 
 export const BloomLogo: React.FC<BloomLogoProps> = ({
   className = '',
-  size = 'md',
+  size = 'header',
   variant = 'emblem',
 }) => {
   if (variant === 'full') {
     const sizeClasses = {
-      sm: 'h-8',
+      sm: 'h-9',
       md: 'h-12',
+      header: 'h-12 sm:h-14',
       lg: 'h-20',
       xl: 'h-28',
     };
 
     return (
-      <div className={`relative inline-flex items-center overflow-hidden rounded-xl ${sizeClasses[size]} ${className}`}>
+      <div className={`relative inline-flex items-center overflow-hidden rounded-2xl ${sizeClasses[size]} ${className}`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/bloom-logo.png"
+          src="/logo.png"
           alt="BLOOM Specialty Coffee"
-          className="h-full w-auto object-contain rounded-xl"
+          className="h-full w-auto object-contain rounded-2xl"
         />
       </div>
     );
   }
 
-  // Emblem mode (optimized for navbar badge or square icon)
+  // Emblem mode: focused on the iconic coffee blossom and bean mark
   const emblemSizes = {
-    sm: 'w-7 h-7',
-    md: 'w-9 h-9 sm:w-10 sm:h-10',
-    lg: 'w-14 h-14',
-    xl: 'w-20 h-20',
+    sm: 'w-8 h-8',
+    md: 'w-10 h-10',
+    header: 'w-12 h-12 sm:w-14 sm:h-14', // Large and prominent for header
+    lg: 'w-16 h-16 sm:w-20 sm:h-20',
+    xl: 'w-24 h-24 sm:w-28 sm:h-28',
   };
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center overflow-hidden rounded-xl bg-[#1b1c1e] border border-amber-500/30 shadow-md shadow-black/40 shrink-0 ${emblemSizes[size]} ${className}`}
+      className={`relative inline-flex items-center justify-center overflow-hidden rounded-2xl bg-[#161619] border-2 border-[#C88A6E]/40 shadow-lg shadow-black/60 shrink-0 transition-transform group-hover:scale-105 group-hover:border-[#C88A6E] ${emblemSizes[size]} ${className}`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/bloom-logo.png"
+        src="/logo.png"
         alt="BLOOM Coffee Logo"
-        className="w-[170%] h-[170%] max-w-none object-cover object-[center_35%] scale-105"
+        className="w-[185%] h-[185%] max-w-none object-cover object-[center_34%] transition-transform duration-300"
       />
     </div>
   );

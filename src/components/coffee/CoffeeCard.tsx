@@ -41,7 +41,7 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({
     if (days < 5) {
       return {
         label: `${days} días (Desgasificando)`,
-        color: 'text-amber-500 bg-amber-500/10 border-amber-500/20',
+        color: 'text-copper-500 bg-copper-500/10 border-copper-500/20',
       };
     }
     if (days <= 30) {
@@ -78,15 +78,15 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({
     <div
       className={`relative rounded-2xl border transition-all duration-200 p-5 flex flex-col justify-between ${
         isSelected
-          ? 'bg-amber-500/5 dark:bg-amber-950/20 border-amber-500 dark:border-amber-600 shadow-lg ring-1 ring-amber-500/50'
-          : 'bg-white dark:bg-stone-900/70 border-stone-200 dark:border-stone-800 hover:border-amber-500/40 shadow-sm'
+          ? 'bg-copper-500/5 dark:bg-copper-950/20 border-copper-500 dark:border-copper-600 shadow-lg ring-1 ring-copper-500/50'
+          : 'bg-white dark:bg-stone-900/70 border-stone-200 dark:border-stone-800 hover:border-copper-500/40 shadow-sm'
       }`}
     >
       <div>
         {/* Top Meta Header */}
         <div className="flex items-start justify-between gap-3">
           <div>
-            <span className="text-[11px] font-medium tracking-wide uppercase text-amber-600 dark:text-amber-400">
+            <span className="text-[11px] font-medium tracking-wide uppercase text-copper-600 dark:text-copper-400">
               {coffee.roaster}
             </span>
             <h3 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100 mt-0.5 leading-snug">
@@ -108,7 +108,7 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({
 
         {/* Process & Roast Badges */}
         <div className="flex flex-wrap items-center gap-1.5 mt-3">
-          <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20">
+          <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-copper-500/10 text-copper-700 dark:text-copper-300 border border-copper-500/20">
             {processLabels[coffee.process] || coffee.process}
           </span>
           <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700">
@@ -128,13 +128,13 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({
         <div className="mt-3 flex items-center gap-4 text-xs text-stone-500 dark:text-stone-400">
           {coffee.altitude && (
             <div className="flex items-center gap-1">
-              <Mountain className="w-3.5 h-3.5 text-amber-500" />
+              <Mountain className="w-3.5 h-3.5 text-copper-500" />
               <span>{coffee.altitude} msnm</span>
             </div>
           )}
           {coffee.roastDate && (
             <div className="flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5 text-amber-500" />
+              <Calendar className="w-3.5 h-3.5 text-copper-500" />
               <span>Tostado: {coffee.roastDate}</span>
             </div>
           )}
@@ -175,8 +175,8 @@ export const CoffeeCard: React.FC<CoffeeCardProps> = ({
           onClick={() => onSelect(coffee)}
           className={`text-xs px-4 py-2 rounded-xl font-bold transition-all flex items-center gap-1.5 ${
             isSelected
-              ? 'bg-amber-600 hover:bg-amber-500 text-white shadow-md shadow-amber-900/30'
-              : 'bg-stone-900 dark:bg-stone-800 hover:bg-amber-600 dark:hover:bg-amber-600 text-white dark:text-stone-200 hover:text-white'
+              ? 'bg-copper-600 hover:bg-copper-500 text-white shadow-md shadow-copper-900/30'
+              : 'bg-stone-900 dark:bg-stone-800 hover:bg-copper-600 dark:hover:bg-copper-600 text-white dark:text-stone-200 hover:text-white'
           }`}
         >
           <span>Preparar Receta</span>
