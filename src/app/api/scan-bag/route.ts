@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, SchemaType, Schema } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
-        { error: "Falta configurar GEMINI_API_KEY en las variables de entorno." },
+        { error: "Falta configurar GEMINI_API_KEY en las variables de entorno de Vercel." },
         { status: 500 }
       );
     }
@@ -25,48 +25,54 @@ export async function POST(req: Request) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
 
-    // Tipado explícito con la interfaz Schema del SDK
-    const schema: Schema = {
-      type: SchemaType.OBJECT,
-      properties: {
-        name: { type: SchemaType.STRING },
-        roaster: { type: SchemaType.STRING },
-        origin: { type: SchemaType.STRING },
-        variety: { type: SchemaType.STRING },
-        process: { type: SchemaType.STRING },
-        roastLevel: { type: SchemaType.STRING },
-        altitude: { type: SchemaType.NUMBER },
-        roastDate: { type: SchemaType.STRING },
-        tastingNotes: {
-          type: SchemaType.ARRAY,
-          items: { type: SchemaType.STRING },
-        },
-        notes: { type: SchemaType.STRING },
-      },
-      required: ["name"],
-    };
+    // Lista de nombres de modelo compatibles ordenados por preferencia
+    const modelCandidates = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"];
+    let result = null;
+    let lastError = null;
 
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash-latest",
-      generationConfig: {
-        responseMimeType: "application/json",
-        responseSchema: schema,
-      },
-    });
+    const prompt = `Analiza la etiqueta de esta bolsa de café de especialidad.
+Extrae la información y devuelve ÚNICAMENTE un objeto JSON válido con esta estructura exacta:
+{
+  "name": "Nombre del café o finca",
+  "roaster": "Nombre del tostador",
+  "origin": "País y región",
+  "variety": "Variedad botánica (ej: Geisha, Bourbon)",
+  "process": "washed | natural | honey | anaerobic | experimental",
+  "roastLevel": "light | medium_light | medium | medium_dark | dark",
+  "altitude": 1800,
+  "roastDate": "YYYY-MM-DD",
+  "tastingNotes": ["Nota 1", "Nota 2"],
+  "notes": "Notas adicionales si las hay"
+}
+No incluyas marcas de formato Markdown (como \`\`\`json), solo el JSON plano.`;
 
-    const prompt = "Analiza la etiqueta de esta bolsa de café de especialidad y extrae toda la información visible.";
+    for (const modelName of modelCandidates) {
+      try {
+        const model = genAI.getGenerativeModel({ model: modelName });
+        result = await model.generateContent([
+          prompt,
+          {
+            inlineData: {
+              data: base64Clean,
+              mimeType: body.mimeType || "image/jpeg",
+            },
+          },
+        ]);
+        if (result) break;
+      } catch (err) {
+        lastError = err;
+        console.warn(`Falló el modelo ${modelName}, intentando siguiente...`);
+      }
+    }
 
-    const result = await model.generateContent([
-      prompt,
-      {
-        inlineData: {
-          data: base64Clean,
-          mimeType: body.mimeType || "image/jpeg",
-        },
-      },
-    ]);
+    if (!result) {
+      throw lastError || new Error("No se pudo conectar con ningún modelo de Gemini disponible.");
+    }
 
-    const data = JSON.parse(result.response.text());
+    const responseText = result.response.text();
+    const cleanJsonText = responseText.replace(/```json|```/g, "").trim();
+    const data = JSON.parse(cleanJsonText);
+
     return NextResponse.json(data);
   } catch (error: any) {
     console.error("Error en /api/scan-bag:", error);
