@@ -17,6 +17,18 @@ export async function POST(req: NextRequest) {
 
     const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 
+    // Return error if API key missing
+    if (!apiKey) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Gemini API key not provided. Configure GEMINI_API_KEY in Vercel settings.',
+          notice: 'Agrega tu API key en Ajustes para habilitar el escaneo de fotos en vivo.',
+        },
+        { status: 400 }
+      );
+    }
+
     // Clean base64 string
     const cleanBase64 = imageBase64.replace(/^data:image\/[a-zA-Z0-9+]+;base64,/, '');
 
