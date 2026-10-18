@@ -25,12 +25,12 @@ export async function POST(req: Request) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
 
-    // Identificadores de modelo compatibles y versiones específicas de API
+    // Modelos actualizados según recomendación de la API de Google
     const modelCandidates = [
-      "gemini-2.0-flash",
-      "gemini-1.5-flash-002",
-      "gemini-1.5-flash-001",
-      "gemini-2.0-flash-lite",
+      "gemini-3.5-flash-lite",
+      "gemini-3.5-flash",
+      "gemini-1.5-flash",
+      "gemini-1.5-flash-8b",
     ];
 
     let result = null;
