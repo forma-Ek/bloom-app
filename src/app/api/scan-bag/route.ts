@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType, Schema } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
-        { error: "Falta configurar GEMINI_API_KEY en Vercel." },
+        { error: "Falta configurar GEMINI_API_KEY en las variables de entorno." },
         { status: 500 }
       );
     }
@@ -25,8 +25,8 @@ export async function POST(req: Request) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
 
-    // Definición de esquema para forzar salida JSON estructurada
-    const schema = {
+    // Tipado explícito con la interfaz Schema del SDK
+    const schema: Schema = {
       type: SchemaType.OBJECT,
       properties: {
         name: { type: SchemaType.STRING },
@@ -46,7 +46,6 @@ export async function POST(req: Request) {
       required: ["name"],
     };
 
-    // Usar gemini-1.5-flash-latest para asegurar compatibilidad de versión
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash-latest",
       generationConfig: {
