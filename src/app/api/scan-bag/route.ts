@@ -25,8 +25,14 @@ export async function POST(req: Request) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
 
-    // Lista de nombres de modelo compatibles ordenados por preferencia
-    const modelCandidates = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"];
+    // Identificadores de modelo compatibles y versiones específicas de API
+    const modelCandidates = [
+      "gemini-2.0-flash",
+      "gemini-1.5-flash-002",
+      "gemini-1.5-flash-001",
+      "gemini-2.0-flash-lite",
+    ];
+
     let result = null;
     let lastError = null;
 
@@ -61,7 +67,7 @@ No incluyas marcas de formato Markdown (como \`\`\`json), solo el JSON plano.`;
         if (result) break;
       } catch (err) {
         lastError = err;
-        console.warn(`Falló el modelo ${modelName}, intentando siguiente...`);
+        console.warn(`Falló el modelo ${modelName}, probando el siguiente candidato...`);
       }
     }
 
