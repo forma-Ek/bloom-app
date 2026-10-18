@@ -106,36 +106,30 @@ export const AddCoffeeModal: React.FC<AddCoffeeModalProps> = ({
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              imageBase64: base64Data,
+              image: base64Data,
               mimeType: file.type || 'image/jpeg',
-              userApiKey: geminiApiKey,
             }),
           });
 
           const json = await res.json();
-          if (json.success && json.data) {
-            const d = json.data;
-            if (d.name) setName(d.name);
-            if (d.roaster) setRoaster(d.roaster);
-            if (d.origin) setOrigin(d.origin);
-            if (d.variety) setVariety(d.variety);
-            if (d.process) setProcess(d.process as ProcessMethod);
-            if (d.roastLevel) setRoastLevel(d.roastLevel as RoastLevel);
-            if (d.altitude) setAltitude(Number(d.altitude));
-            if (d.roastDate) setRoastDate(d.roastDate);
-            if (Array.isArray(d.tastingNotes) && d.tastingNotes.length > 0) {
-              setTastingNotes(d.tastingNotes);
+          if (res.ok && json) {
+            // Rellenar campos extraídos
+            if (json.name) setName(json.name);
+            if (json.roaster) setRoaster(json.roaster);
+            if (json.origin) setOrigin(json.origin);
+            if (json.variety || json.varietal) setVariety(json.variety || json.varietal);
+            if (json.process) setProcess(json.process as ProcessMethod);
+            if (json.roastLevel) setRoastLevel(json.roastLevel as RoastLevel);
+            if (json.altitude) setAltitude(Number(json.altitude));
+            if (json.roastDate) setRoastDate(json.roastDate);
+            if (Array.isArray(json.tastingNotes) && json.tastingNotes.length > 0) {
+              setTastingNotes(json.tastingNotes);
             }
-            if (d.notes) setNotes(d.notes);
+            if (json.notes) setNotes(json.notes);
 
             setScanMessage('¡Etiqueta identificada con éxito! Revisa los campos abajo y guarda.');
-            if (json.notice) {
-              setScanNotice(json.notice);
-            }
-            // Switch to form so user sees results clearly
             setActiveSubTab('manual');
           } else {
-            // Show error notice (toast) from API response or generic fallback
             setScanMessage(null);
             const errMsg = json.error || 'No se pudo extraer el texto de la foto. Por favor, introduce los datos manualmente.';
             setScanNotice(errMsg);
