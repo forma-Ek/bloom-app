@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Clean base64 string
-    const cleanBase64 = imageBase64.replace(/^data:image\/[a-zA-Z0-9+]+;base64,/, '');
+    const cleanBase64 = imageBase64.replace(/^data:image\/\w+;base64,/, '');
 
     // If an API key is available, call Google Gemini 1.5 Flash
     if (apiKey) {
@@ -59,8 +59,8 @@ Devuelve EXCLUSIVAMENTE un objeto JSON válido con este formato exacto (sin mark
               parts: [
                 { text: promptText },
                 {
-                  inline_data: {
-                    mime_type: mimeType,
+                  inlineData: {
+                    mimeType: mimeType,
                     data: cleanBase64,
                   },
                 },
