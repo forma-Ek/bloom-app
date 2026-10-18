@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 
     if (!rawImage) {
       return NextResponse.json(
-        { error: "No se recibió ninguna imagen en el cuerpo de la petición." },
+        { error: "No se recibió ninguna imagen en la petición." },
         { status: 400 }
       );
     }
@@ -16,19 +16,46 @@ export async function POST(req: Request) {
     const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
-        { error: "Falta configurar GEMINI_API_KEY en las variables de entorno de Vercel." },
+        { error: "Falta configurar GEMINI_API_KEY en Vercel." },
         { status: 500 }
       );
     }
 
-    // Extraer limpia la cadena Base64
     const base64Clean = rawImage.includes(",") ? rawImage.split(",")[1] : rawImage;
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const prompt =
-      "Analiza la etiqueta de esta bolsa de café de especialidad. Extrae en formato JSON únicamente los siguientes campos: name, roaster, origin, variety, process, roastLevel, altitude, roastDate, tastingNotes (array de cadenas), notes. Devuelve SOLO el objeto JSON sin formato markdown.";
+    // Definición de esquema para forzar salida JSON estructurada
+    const schema = {
+      type: SchemaType.OBJECT,
+      properties: {
+        name: { type: SchemaType.STRING },
+        roaster: { type: SchemaType.STRING },
+        origin: { type: SchemaType.STRING },
+        variety: { type: SchemaType.STRING },
+        process: { type: SchemaType.STRING },
+        roastLevel: { type: SchemaType.STRING },
+        altitude: { type: SchemaType.NUMBER },
+        roastDate: { type: SchemaType.STRING },
+        tastingNotes: {
+          type: SchemaType.ARRAY,
+          items: { type: SchemaType.STRING },
+        },
+        notes: { type: SchemaType.STRING },
+      },
+      required: ["name"],
+    };
+
+    // Usar gemini-1.5-flash-latest para asegurar compatibilidad de versión
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash-latest",
+      generationConfig: {
+        responseMimeType: "application/json",
+        responseSchema: schema,
+      },
+    });
+
+    const prompt = "Analiza la etiqueta de esta bolsa de café de especialidad y extrae toda la información visible.";
 
     const result = await model.generateContent([
       prompt,
@@ -40,21 +67,12 @@ export async function POST(req: Request) {
       },
     ]);
 
-    const responseText = result.response.text();
-    // Limpieza agresiva de bloques de código Markdown
-    const cleanJson = responseText
-      .replace(/^```json\s*/i, "")
-      .replace(/^```\s*/i, "")
-      .replace(/\s*```$/i, "")
-      .trim();
-
-    const data = JSON.parse(cleanJson);
-
+    const data = JSON.parse(result.response.text());
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error("Error capturado en /api/scan-bag:", error);
+    console.error("Error en /api/scan-bag:", error);
     return NextResponse.json(
-      { error: error.message || "Error interno del servidor al procesar la imagen con Gemini." },
+      { error: error.message || "Error al procesar la imagen con Gemini." },
       { status: 500 }
     );
   }
