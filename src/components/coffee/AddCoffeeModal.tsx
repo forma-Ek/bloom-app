@@ -135,7 +135,10 @@ export const AddCoffeeModal: React.FC<AddCoffeeModalProps> = ({
             // Switch to form so user sees results clearly
             setActiveSubTab('manual');
           } else {
-            setScanMessage('No se pudo extraer el texto de la foto. Puedes rellenar los datos a mano.');
+            // Show error notice (toast) from API response or generic fallback
+            setScanMessage(null);
+            const errMsg = json.error || 'No se pudo extraer el texto de la foto. Por favor, introduce los datos manualmente.';
+            setScanNotice(errMsg);
           }
         } catch (err) {
           console.error(err);
