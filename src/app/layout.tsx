@@ -30,6 +30,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`dark ${inter.variable} ${fraunces.variable}`}>
+      <head>
+        {/* PWA meta tags */}
+        <meta name="theme-color" content="#1c1917" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+      </head>
       <body className="font-sans antialiased bg-[#FAF7F4] dark:bg-[#121214] text-stone-900 dark:text-[#F5F5F7] selection:bg-[#C88A6E] selection:text-white">
         {children}
       </body>
