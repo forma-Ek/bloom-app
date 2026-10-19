@@ -209,7 +209,22 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
             return (
               <div
                 key={methodId}
-                onClick={() => setSelectedMethod(methodId)}
+                onClick={() => {
+  // If this method is currently selected, deselect it and choose another enabled method
+  if (selectedMethodId === methodId) {
+    toggleMethod(methodId);
+    const remaining = enabledMethods.filter((m) => m !== methodId);
+    if (remaining.length > 0) {
+      setSelectedMethod(remaining[0]);
+    }
+  } else {
+    // Enable if not already enabled and set as selected
+    if (!enabledMethods.includes(methodId)) {
+      toggleMethod(methodId);
+    }
+    setSelectedMethod(methodId);
+  }
+}}
                 className={`cursor-pointer rounded-2xl border-2 transition-all p-5 flex flex-col justify-between bg-white dark:bg-stone-900 border-copper-500/80 dark:border-copper-500 shadow-sm ${isSelected ? 'ring-2 ring-copper-500' : ''}`}
               >
                 <div>
