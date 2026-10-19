@@ -1,181 +1,190 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { GeneratedRecipe, RecipeStep } from '@/types';
+import { GeneratedRecipe } from '@/types';
 import { useVibration } from '@/hooks/useVibration';
-import { Play, Pause, RotateCcw, FastForward } from 'lucide-react';
+import { Play, Pause, RotateCcw, SkipForward } from 'lucide-react';
 
-/**
- * PhaseTimer
- * ---------
- * A high‑precision timer that walks through the phases (steps) of a coffee
- * recipe. It uses `requestAnimationFrame` for smooth updates, renders a radial
- * progress indicator with Framer Motion, and triggers haptic feedback via the
- * Web Vibration API when a phase ends or the whole extraction finishes.
- *
- * Props
- * -----
- * - `recipe`: The `GeneratedRecipe` containing an ordered array of `steps`.
- * - `onComplete?`: Optional callback executed when the entire timer completes.
- *
- * Controls
- * --------
- *   • Start / Pause – toggles the running state.
- *   • Reset       – returns to the first phase and clears elapsed time.
- *   • Next        – manually advance to the next phase (if any).
- */
 interface PhaseTimerProps {
   recipe: GeneratedRecipe;
   onComplete?: () => void;
 }
 
 export const PhaseTimer: React.FC<PhaseTimerProps> = ({ recipe, onComplete }) => {
-  // --- Vibration helpers ---------------------------------------------------
-  const { vibratePhaseChange, vibrateComplete } = useVibration();
-
-  // --- Timer state --------------------------------------------------------
+  const steps = recipe.steps || [];
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [currentPhaseIdx, setCurrentPhaseIdx] = useState(0);
-  const [phaseElapsed, setPhaseElapsed] = useState(0); // seconds elapsed in current phase
+  const [stepElapsed, setStepElapsed] = useState(0);
+  const [totalElapsed, setTotalElapsed] = useState(0);
 
-  const rafId = useRef<number>();
-  const lastTimestamp = useRef<number>(0);
+  const { vibratePhaseChange, vibrateComplete } = useVibration();
+  const requestRef = useRef<number | null>(null);
+  const previousTimeRef = useRef<number | null>(null);
 
-  const steps = recipe.steps;
-  const totalPhases = steps.length;
-
-  const currentStep: RecipeStep = steps[currentPhaseIdx];
-  const phaseDuration = currentStep.durationSeconds;
-
-  // --- Helpers ------------------------------------------------------------
-  const start = () => setIsRunning(true);
-  const pause = () => setIsRunning(false);
-  const reset = () => {
-    setIsRunning(false);
-    setCurrentPhaseIdx(0);
-    setPhaseElapsed(0);
+  const currentStep = steps[currentStepIndex] || {
+    title: 'Vertido',
+    description: 'Vierte agua según la receta',
+    durationSeconds: 30,
+    waterDeltaGrams: 0,
+    targetWaterGrams: 0,
   };
 
-  const advancePhase = useCallback(() => {
-    // vibrate for phase transition
-    vibratePhaseChange();
-    if (currentPhaseIdx + 1 < totalPhases) {
-      setCurrentPhaseIdx((i) => i + 1);
-      setPhaseElapsed(0);
+  const stepDuration = currentStep.durationSeconds || 30;
+  const stepProgress = Math.min((stepElapsed / stepDuration) * 100, 100);
+
+  // SVG Ring Calculation
+  const radius = 90;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (stepProgress / 100) * circumference;
+
+  const handleNextStep = useCallback(() => {
+    if (currentStepIndex < steps.length - 1) {
+      vibratePhaseChange();
+      setCurrentStepIndex((prev) => prev + 1);
+      setStepElapsed(0);
     } else {
-      // finished all phases
-      setIsRunning(false);
       vibrateComplete();
-      onComplete?.();
+      setIsRunning(false);
+      if (onComplete) onComplete();
     }
-  }, [currentPhaseIdx, totalPhases, vibratePhaseChange, vibrateComplete, onComplete]);
+  }, [currentStepIndex, steps.length, vibratePhaseChange, vibrateComplete, onComplete]);
 
-  // --- Animation loop -----------------------------------------------------
+  const updateTimer = useCallback(
+    (time: number) => {
+      if (previousTimeRef.current !== null && isRunning) {
+        const deltaTime = (time - previousTimeRef.current) / 1000;
+        setStepElapsed((prevStep) => {
+          const nextStep = prevStep + deltaTime;
+          if (nextStep >= stepDuration) {
+            handleNextStep();
+            return 0;
+          }
+          return nextStep;
+        });
+        setTotalElapsed((prev) => prev + deltaTime);
+      }
+      previousTimeRef.current = time;
+      if (isRunning) {
+        requestRef.current = requestAnimationFrame(updateTimer);
+      }
+    },
+    [isRunning, stepDuration, handleNextStep]
+  );
+
   useEffect(() => {
-    if (!isRunning) return;
-    const tick = (timestamp: number) => {
-      if (!lastTimestamp.current) lastTimestamp.current = timestamp;
-      const delta = (timestamp - lastTimestamp.current) / 1000; // seconds
-      lastTimestamp.current = timestamp;
-
-      setPhaseElapsed((prev) => {
-        const newElapsed = prev + delta;
-        if (newElapsed >= phaseDuration) {
-          // Phase finished – move to next
-          advancePhase();
-          return 0; // will be reset by advancePhase
-        }
-        return newElapsed;
-      });
-      rafId.current = requestAnimationFrame(tick);
-    };
-    rafId.current = requestAnimationFrame(tick);
+    if (isRunning) {
+      previousTimeRef.current = performance.now();
+      requestRef.current = requestAnimationFrame(updateTimer);
+    } else if (requestRef.current) {
+      cancelAnimationFrame(requestRef.current);
+    }
     return () => {
-      if (rafId.current) cancelAnimationFrame(rafId.current);
-      lastTimestamp.current = 0;
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, [isRunning, phaseDuration, advancePhase]);
+  }, [isRunning, updateTimer]);
 
-  // --- UI calculations ----------------------------------------------------
-  const totalElapsed = steps
-    .slice(0, currentPhaseIdx)
-    .reduce((sum, s) => sum + s.durationSeconds, 0) + phaseElapsed;
-  const totalDuration = steps.reduce((sum, s) => sum + s.durationSeconds, 0);
-  const remainingPhase = Math.max(0, phaseDuration - phaseElapsed);
-  const progressRatio = totalElapsed / totalDuration; // 0..1
-  const stepProgress = Math.min(100, (phaseElapsed / phaseDuration) * 100); // percent of current step
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
-  // --- Render ------------------------------------------------------------
+  const handleReset = () => {
+    setIsRunning(false);
+    setCurrentStepIndex(0);
+    setStepElapsed(0);
+    setTotalElapsed(0);
+  };
+
   return (
-    <div className="flex flex-col items-center space-y-4 p-4 bg-stone-900/60 rounded-xl text-stone-100">
-      {/* Radial progress */}
-      <svg className="w-48 h-48" viewBox="0 0 36 36">
-        <motion.circle
-          cx="18"
-          cy="18"
-          r="15.915"
-          fill="none"
-          stroke="rgba(255,255,255,0.1)"
-          strokeWidth="3"
-        />
-        <motion.circle
-          cx="18"
-          cy="18"
-          r="15.915"
-          fill="none"
-          stroke="var(--color-copper, #b87333)"
-          strokeWidth="3"
-          strokeDasharray="100"
-          strokeDashoffset={100 - progressRatio * 100}
-          strokeLinecap="round"
-        />
-        {/* Center text */}
-        <text
-          x="18"
-          y="20.35"
-          textAnchor="middle"
-          className="fill-current text-base font-mono"
-        >
-          {Math.round(remainingPhase)}s
-        </text>
-      </svg>
-
-      {/* Phase label */}
-      <div className="text-lg font-semibold text-copper-300">
-        {currentStep.title}
+    <div className="flex flex-col items-center justify-center space-y-6 w-full max-w-md mx-auto p-4 text-stone-100">
+      {/* Paso Activo */}
+      <div className="px-3 py-1 rounded-full bg-stone-800 border border-amber-600/30 text-amber-400 text-xs tracking-wider uppercase">
+        Paso {currentStepIndex + 1} de {steps.length}: {currentStep.title}
       </div>
 
-      {/* Controls */}
-      <div className="flex gap-3">
-        {isRunning ? (
-          <button
-            onClick={pause}
-            className="p-2 rounded-full bg-copper-500/20 hover:bg-copper-500/30"
-            aria-label="Pause"
-          >
-            <Pause className="w-5 h-5 text-copper-200" />
-          </button>
-        ) : (
-          <button
-            onClick={start}
-            className="p-2 rounded-full bg-copper-500/20 hover:bg-copper-500/30"
-            aria-label="Start"
-          >
-            <Play className="w-5 h-5 text-copper-200" />
-          </button>
-        )}
+      {/* Temporizador Radial (Anillo SVG) */}
+      <div className="relative flex items-center justify-center w-64 h-64">
+        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
+          <circle
+            cx="100"
+            cy="100"
+            r={radius}
+            className="text-stone-800"
+            strokeWidth="8"
+            stroke="currentColor"
+            fill="transparent"
+          />
+          <motion.circle
+            cx="100"
+            cy="100"
+            r={radius}
+            className="text-amber-600"
+            strokeWidth="8"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            stroke="currentColor"
+            fill="transparent"
+            initial={{ strokeDashoffset: circumference }}
+            animate={{ strokeDashoffset }}
+            transition={{ duration: 0.1, ease: 'linear' }}
+          />
+        </svg>
+
+        <div className="absolute flex flex-col items-center justify-center text-center">
+          <span className="text-5xl font-black tracking-tight text-white font-mono">
+            {formatTime(stepElapsed)}
+          </span>
+          <span className="text-xs text-amber-500 font-medium mt-1">
+            {Math.round(stepProgress)}% ({Math.max(0, Math.ceil(stepDuration - stepElapsed))}s)
+          </span>
+          <span className="text-[10px] text-stone-400 mt-2">
+            Total: {formatTime(totalElapsed)}
+          </span>
+        </div>
+      </div>
+
+      {/* Instrucciones de Vertido */}
+      <div className="w-full bg-stone-900 border border-stone-800 rounded-2xl p-4 shadow-xl">
+        <p className="text-sm text-stone-300 text-center mb-4 leading-relaxed">
+          {currentStep.description}
+        </p>
+        <div className="grid grid-cols-2 gap-3 text-center">
+          <div className="bg-stone-950 p-3 rounded-xl border border-stone-800">
+            <span className="text-[10px] uppercase text-stone-400 block">Verter en este paso</span>
+            <span className="text-xl font-bold text-amber-400">+{currentStep.waterDeltaGrams}g</span>
+          </div>
+          <div className="bg-stone-950 p-3 rounded-xl border border-stone-800">
+            <span className="text-[10px] uppercase text-stone-400 block">Objetivo en balanza</span>
+            <span className="text-xl font-bold text-white">{currentStep.targetWaterGrams}g</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Botones de Control */}
+      <div className="flex items-center gap-3 w-full">
         <button
-          onClick={reset}
-          className="p-2 rounded-full bg-copper-500/20 hover:bg-copper-500/30"
-          aria-label="Reset"
+          onClick={handleReset}
+          className="p-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 transition"
+          title="Reiniciar"
         >
-          <RotateCcw className="w-5 h-5 text-copper-200" />
+          <RotateCcw className="w-5 h-5" />
         </button>
+
         <button
-          onClick={advancePhase}
-          className="p-2 rounded-full bg-copper-500/20 hover:bg-copper-500/30"
-          aria-label="Next Phase"
+          onClick={() => setIsRunning(!isRunning)}
+          className="flex-1 px-6 py-3 rounded-xl bg-amber-600 hover:bg-amber-500 font-bold text-stone-950 flex items-center justify-center gap-2 transition shadow-lg shadow-amber-600/20"
         >
-          <FastForward className="w-5 h-5 text-copper-200" />
+          {isRunning ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 fill-current" />}
+          <span>{isRunning ? 'Pausar' : 'Iniciar Vertido'}</span>
+        </button>
+
+        <button
+          onClick={handleNextStep}
+          className="p-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 transition"
+          title="Siguiente Paso"
+        >
+          <SkipForward className="w-5 h-5" />
         </button>
       </div>
     </div>
