@@ -1,4 +1,4 @@
-export type BrewMethodId = 'v60' | 'aeropress' | 'french_press' | 'chemex' | 'espresso' | 'cold_drip';
+export type BrewMethodId = 'v60' | 'aeropress' | 'french_press' | 'chemex' | 'espresso' | 'cold_drip' | 'cold_brew';
 
 export type ScaleType = 'dial' | 'clicks' | 'numbers';
 
