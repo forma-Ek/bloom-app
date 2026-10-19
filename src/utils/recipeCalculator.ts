@@ -106,6 +106,22 @@ export const BREW_METHODS: Record<BrewMethodId, BrewMethodDetails> = {
     filterType: 'Bolsa de filtrado o papel grueso',
     description: 'Maceración lenta en agua fría por 16-24 horas. Resalta la dulzura natural reduciendo drásticamente la acidez y el amargor.',
   },
+  cold_brew: {
+    id: 'cold_brew',
+    name: 'Cold Brew',
+    tagline: 'Infusión en frío por inmersión prolongada',
+    icon: 'Snowflake',
+    defaultRatio: 10.0,
+    minRatio: 8.0,
+    maxRatio: 12.0,
+    defaultDoseGrams: 30,
+    waterTempRange: [20, 25],
+    grindCategory: 'coarse',
+    relativeGrindNormalized: 0.85,
+    typicalTimeSeconds: 43200, // 12 horas
+    filterType: 'Filtro grueso o bolsa de café',
+    description: 'Maceración prolongada en agua fría de 12 a 24 horas, ideal para obtener una taza suave y baja acidez.',
+  }
 };
 
 export const DEFAULT_GRINDER: GrinderConfig = {
