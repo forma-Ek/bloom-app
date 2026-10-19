@@ -102,6 +102,7 @@ export const PhaseTimer: React.FC<PhaseTimerProps> = ({ recipe, onComplete }) =>
   const totalDuration = steps.reduce((sum, s) => sum + s.durationSeconds, 0);
   const remainingPhase = Math.max(0, phaseDuration - phaseElapsed);
   const progressRatio = totalElapsed / totalDuration; // 0..1
+  const stepProgress = Math.min(100, (phaseElapsed / phaseDuration) * 100); // percent of current step
 
   // --- Render ------------------------------------------------------------
   return (
