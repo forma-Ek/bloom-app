@@ -43,15 +43,7 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({
     dialInStates,
   } = useCoffeeStore();
 
-  const allAvailableMethods: BrewMethodId[] = [
-    'v60',
-    'aeropress',
-    'french_press',
-    'chemex',
-    'espresso',
-    'kalita_wave',
-    'cold_brew',
-  ];
+  const allAvailableMethods = Object.keys(BREW_METHODS) as BrewMethodId[];
 
   // Divide into Primary (owned by user) vs Secondary (other methods to explore)
   const primaryMethods = useMemo(() => {

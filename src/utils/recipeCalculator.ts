@@ -89,27 +89,12 @@ export const BREW_METHODS: Record<BrewMethodId, BrewMethodDetails> = {
     filterType: 'Portafiltro de precisión 58mm',
     description: 'Extracción a 9 bares de presión. Pura concentración de sólidos solubles y emulsión de aceites esenciales.',
   },
-  kalita_wave: {
-    id: 'kalita_wave',
-    name: 'Kalita Wave',
-    tagline: 'Fondo plano, extracción uniforme y dulzor acentuado',
-    icon: 'Waves',
-    defaultRatio: 16.0,
-    minRatio: 14.5,
-    maxRatio: 17.0,
-    defaultDoseGrams: 15,
-    waterTempRange: [92, 95],
-    grindCategory: 'medium_fine',
-    relativeGrindNormalized: 0.48,
-    typicalTimeSeconds: 210, // 3:30 min
-    filterType: 'Filtro ondulado de fondo plano 185',
-    description: 'Cesta de fondo plano con tres orificios de goteo que asegura un lecho uniforme y minimiza la canalización del agua.',
-  },
-  cold_brew: {
-    id: 'cold_brew',
-    name: 'Cold Brew',
+
+  cold_drip: {
+    id: 'cold_drip',
+    name: 'Cold Drip',
     tagline: 'Acidez suave, cuerpo aterciopelado y notas chocolatosas',
-    icon: 'Snowflake',
+    icon: 'Droplets',
     defaultRatio: 10.0,
     minRatio: 8.0,
     maxRatio: 12.0,
@@ -254,7 +239,7 @@ export function calculateGrindSetting(
  * Calculates optimal water temperature based on roast level and coffee process
  */
 export function calculateWaterTemp(coffee: CoffeeBean, method: BrewMethodDetails): number {
-  if (method.id === 'cold_brew') {
+  if (method.id === 'cold_drip') {
     return 20; // Room temp / cold
   }
 
@@ -557,54 +542,7 @@ export function generateRecipe(
     });
 
     tips.push(`Tiempo ideal en taza: 26-30 segundos para un ratio 1:${ratio}.`);
-  } else if (methodId === 'kalita_wave') {
-    const bloomWater = Math.round(doseGrams * 3);
-    const remaining = totalWaterGrams - bloomWater;
-    const pour1 = Math.round(remaining / 3);
-    const pour2 = Math.round(remaining / 3);
-    const pour3 = remaining - pour1 - pour2;
-
-    steps.push({
-      id: 'step-1',
-      title: 'Bloom & Saturación Ondulada',
-      description: `Vierte ${bloomWater}g de agua en círculos suaves mojando todo el lecho plano sin mojar directamente las ondas del filtro.`,
-      durationSeconds: 45,
-      waterDeltaGrams: bloomWater,
-      targetWaterGrams: bloomWater,
-      pourType: 'bloom',
-    });
-
-    steps.push({
-      id: 'step-2',
-      title: 'Primer Vertido Central',
-      description: `Vierte ${pour1}g con flujo suave en el centro del lecho hasta alcanzar ${bloomWater + pour1}g.`,
-      durationSeconds: 45,
-      waterDeltaGrams: pour1,
-      targetWaterGrams: bloomWater + pour1,
-      pourType: 'pour',
-    });
-
-    steps.push({
-      id: 'step-3',
-      title: 'Segundo Vertido de Pulsos',
-      description: `Vierte ${pour2}g manteniendo la altura de agua estable hasta llegar a ${bloomWater + pour1 + pour2}g.`,
-      durationSeconds: 45,
-      waterDeltaGrams: pour2,
-      targetWaterGrams: bloomWater + pour1 + pour2,
-      pourType: 'pour',
-    });
-
-    steps.push({
-      id: 'step-4',
-      title: 'Vertido Final y Drenaje Plano',
-      description: `Completa los últimos ${pour3}g hasta alcanzar los ${totalWaterGrams}g totales y deja drenar por los 3 orificios.`,
-      durationSeconds: 75,
-      waterDeltaGrams: pour3,
-      targetWaterGrams: totalWaterGrams,
-      pourType: 'drain',
-    });
-
-    tips.push('El fondo plano de Kalita Wave genera una extracción muy homogénea y potencia la dulzura de cafés lavados.');
+  // Kalita Wave method removed
   } else {
     // cold brew
     steps.push({

@@ -37,15 +37,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
     setSelectedMethod,
   } = useCoffeeStore();
 
-  const allMethods: BrewMethodId[] = [
-    'v60',
-    'aeropress',
-    'french_press',
-    'chemex',
-    'espresso',
-    'kalita_wave',
-    'cold_brew',
-  ];
+  const allMethods = Object.keys(BREW_METHODS) as BrewMethodId[];
 
   // Test slider value in dial simulator
   const [testSliderValue, setTestSliderValue] = useState<number>(
